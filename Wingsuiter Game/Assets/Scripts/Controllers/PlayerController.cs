@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    public TMP_Text coordinateText;
+    public GUITextManager textManager;
+    public Rigidbody rigidBody;
+
+    // Declare the magnitude for the X movement
+    const float xMagnitude = 1;
+    // Declare the magnitude for the Y movement 
+    const float yMagnitude = -0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -13,7 +18,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+    // Update is called once per frame at fixed intervals
     void FixedUpdate()
     {
         float horizontalMovement = Input.GetAxis("Horizontal");
@@ -26,24 +31,32 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log($"Vertical axis... {verticalMovement}");
         }
+
         // Prevent the player from flying backward
         if (verticalMovement > 0)
         {
-            //transform.Translate(Vector3.forward * Time.deltaTime * verticalMovement * 100);
-            transform.position = transform.position + new Vector3(1, 0, 0);
+            //transform.Translate(Vector3.forward * Time.deltaTime * verticalMovement * 100;
+            // Add the x magnitude to the movement vector
+            //rigidBody.AddForce(100, 0, 0, ForceMode.Impulse);
+            Debug.Log(transform.forward);
+            Vector3 forwardDirection = transform.forward;
+            forwardDirection.y = 0;
+            //rigidBody.AddForce(forwardDirection * 1000, ForceMode.Impulse);
         }
 
+        // Update the player position
+        //transform.position = transform.position + movement;
+        double velocity = rigidBody.velocity.magnitude;
+        // Update the speed text
+        textManager.UpdateSpeedText(velocity, Time.deltaTime);
+
         // Rotate based on the horizontal movement
+        //transform.Rotate(new Vector3(0, 50 * horizontalMovement * Time.deltaTime, horizontalMovement * Time.deltaTime * -100));
         transform.Rotate(new Vector3(0, 0, horizontalMovement * Time.deltaTime * -100));
+        //-horizontalMovement * Time.deltaTime
 
         // Get the player transform
         Vector3 playerTransform = transform.position;
-        // Get the (x, y, z) coordinates of the player as integers
-        int xPosition = (int) playerTransform.x;
-        int yPosition = (int) playerTransform.y;
-        int zPosition = (int) playerTransform.z;
-
-        // Update the coordinates text with the player's current coordinates
-        coordinateText.text = $"({xPosition}, {yPosition}, {zPosition})";
+        textManager.UpdateCoordinateText(playerTransform);
     }
 }

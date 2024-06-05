@@ -324,7 +324,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Speed: 100 kmph'
+  m_text: 'Speed: 0 kmph'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1748,8 +1748,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1068f1b26b224c043ba1221a6136a6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordinateText: {fileID: 1884692128}
---- !u!54 &1992125048
+  textManager: {fileID: 2083130810}
+  rigidBody: {fileID: 1992125052}
+--- !u!54 &1992125052
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1774,6 +1775,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2083130809}
+  - component: {fileID: 2083130810}
   m_Layer: 0
   m_Name: GUI
   m_TagString: Untagged
@@ -1797,6 +1799,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083130810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083130808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbeb79aa2f114274fac10515d1294fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coordinateText: {fileID: 1884692128}
+  speedText: {fileID: 369212733}
 --- !u!1 &2111418844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1823,7 +1839,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111418844}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &2111418846
 Camera:
   m_ObjectHideFlags: 0
