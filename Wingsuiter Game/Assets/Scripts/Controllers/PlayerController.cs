@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         //transform.position = transform.position + movement;
         double velocity = rigidBody.velocity.magnitude;
         // Update the speed text
-        textManager.UpdateSpeedText(velocity, Time.deltaTime);
+        textManager.UpdateSpeedText(velocity);
 
         // Rotate based on the horizontal movement
         //transform.Rotate(new Vector3(0, 50 * horizontalMovement * Time.deltaTime, horizontalMovement * Time.deltaTime * -100));
