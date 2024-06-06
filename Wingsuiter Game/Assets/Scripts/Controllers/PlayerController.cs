@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        transform.rotation = Quaternion.Euler(-45, 90, 90);
     }
 
     // Update is called once per frame at fixed intervals
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log(transform.forward);
             Vector3 forwardDirection = transform.forward;
             forwardDirection.y = 0;
-            //rigidBody.AddForce(forwardDirection * 1000, ForceMode.Impulse);
+            rigidBody.AddForce(forwardDirection * 100, ForceMode.Impulse);
         }
 
         // Update the player position
@@ -52,7 +52,13 @@ public class PlayerController : MonoBehaviour
 
         // Rotate based on the horizontal movement
         //transform.Rotate(new Vector3(0, 50 * horizontalMovement * Time.deltaTime, horizontalMovement * Time.deltaTime * -100));
-        transform.Rotate(new Vector3(0, 0, horizontalMovement * Time.deltaTime * -100));
+        
+        // Get the change in the Z axis
+        float zChange = horizontalMovement * Time.deltaTime * -40 * (Mathf.Abs(Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.PI / 180)) / 2 + 1.5f);
+        // Get the change in y (depends on the change in z)
+        float yChange = zChange * Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.PI / 180) / 2;
+
+        transform.rotation = Quaternion.Euler(-45, transform.rotation.eulerAngles.y + (yChange), transform.rotation.eulerAngles.z + zChange);
         //-horizontalMovement * Time.deltaTime
 
         // Get the player transform
