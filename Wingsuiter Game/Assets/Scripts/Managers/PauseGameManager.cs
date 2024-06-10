@@ -26,4 +26,16 @@ public class PauseGameManager : MonoBehaviour
         Time.timeScale = 1;
         pausePanel.SetActive(false);
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // Check to make sure that the pause game panel isn't active
+            if (!pausePanel.activeSelf)
+            {
+                PauseGame();
+            }
+        }
+    }
 }
