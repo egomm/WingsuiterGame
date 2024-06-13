@@ -7,6 +7,7 @@ public class CoinManager : MonoBehaviour
     // Set the time (in seconds) between updates of the coin
     const float TIME_BETWEEN_UPDATE = 1;
     // Set the base coins per second
+    // TODO: make the coins per second depend on the velocity
     const int COINS_PER_SECOND = 10;
     // Set the last update time
     float lastUpdateTime = 0;

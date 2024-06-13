@@ -25,17 +25,50 @@ public class PlayerController : MonoBehaviour
         float horizontalMovement = Input.GetAxis("Horizontal");
         float verticalMovement = Input.GetAxis("Vertical");
 
+        // Detect if the player moves their tail up/down
+        float xChange = 0;
+
         // Prevent the player from flying backward
-        Debug.Log(verticalMovement);
+        //Debug.Log(verticalMovement);
+        Debug.Log(transform.rotation.eulerAngles.x);
+        if (transform.rotation.eulerAngles.x >= 315 || transform.rotation.eulerAngles.x <= 45) {
+            xChange += verticalMovement;
+        } 
+        else if (transform.rotation.eulerAngles.x >= 45 && transform.rotation.eulerAngles.x < 180 && verticalMovement < 0)
+        {
+            xChange += verticalMovement;
+        }
+        else if (transform.rotation.eulerAngles.x <= 315 && transform.rotation.eulerAngles.x > 180 && verticalMovement > 0)
+        {
+            xChange += verticalMovement;
+        }
+
+
+
+        /*if ((transform.rotation.eulerAngles.x >= 315 || transform.rotation.eulerAngles.x <= 45) || 
+            (transform.rotation.eulerAngles.x < 315 && verticalMovement < 0) || 
+            (transform.rotation.eulerAngles.x > 45 && verticalMovement > 0))
+        {
+            Debug.Log("?");
+            Debug.Log(verticalMovement);
+            Debug.Log("1st" + (transform.rotation.eulerAngles.x >= 315 || transform.rotation.eulerAngles.x <= 45));
+            Debug.Log("2nd" + (transform.rotation.eulerAngles.x < 315 && verticalMovement > 0));
+            Debug.Log("3rd" + (transform.rotation.eulerAngles.x > 45 && verticalMovement < 0));
+            xChange += verticalMovement;
+        }*/
+
+
         if (verticalMovement > 0)
         {
             //transform.Translate(Vector3.forward * Time.deltaTime * verticalMovement * 100;
             // Add the x magnitude to the movement vector
             //rigidBody.AddForce(100, 0, 0, ForceMode.Impulse
-            Vector3 forwardDirection = transform.forward;
-            forwardDirection.y = 0;
-            rigidBody.AddForce(forwardDirection * 100, ForceMode.Impulse);
+
         }
+
+        Vector3 forwardDirection = transform.forward;
+        forwardDirection.y = 0;
+        rigidBody.AddForce(forwardDirection * 100, ForceMode.Impulse);
 
         // Detect if the player presses the F key (to flare)
         if (Input.GetKeyDown(KeyCode.F))
@@ -45,17 +78,9 @@ public class PlayerController : MonoBehaviour
             rigidBody.AddForce(new Vector3(magX, 1, magZ) * 5000, ForceMode.Impulse);
         }
 
-        // Detect if the player moves their tail up/down
-        float xChange = 0;
-        if (Input.GetKey(KeyCode.S) && transform.rotation.eulerAngles.x >= 315 && transform.rotation.eulerAngles.x < 360)
-        {
-            xChange += 2f;
-        }
-
-
         // Update the player position
         //transform.position = transform.position + movement;
-        double velocity = rigidBody.velocity.magnitude;
+        double velocity = Mathf.Sqrt(Mathf.Pow(rigidBody.velocity.x, 2) + Mathf.Pow(rigidBody.velocity.z, 2));
         // Update the speed text
         textManager.UpdateSpeedText(velocity);
 
@@ -69,16 +94,16 @@ public class PlayerController : MonoBehaviour
 
         if (transform.rotation.eulerAngles.z != 90)
         {
-            yChange += -Mathf.Sin(2 * transform.rotation.eulerAngles.z * Mathf.PI / 180) / 5;
+            yChange += Mathf.Sin(2 * transform.rotation.eulerAngles.z * Mathf.PI / 180) / 5;
         }
 
 
-        if (transform.rotation.eulerAngles.x > 315)
+        /*if (transform.rotation.eulerAngles.x > 315)
         {
             xChange -= 1f;
         }
 
-        Debug.Log(xChange);
+        Debug.Log(xChange);*/
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x + xChange, transform.rotation.eulerAngles.y + (yChange), transform.rotation.eulerAngles.z + zChange);
         //-horizontalMovement * Time.deltaTime
