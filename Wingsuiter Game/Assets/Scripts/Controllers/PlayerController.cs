@@ -28,17 +28,16 @@ public class PlayerController : MonoBehaviour
         // Detect if the player moves their tail up/down
         float xChange = 0;
 
-        // Prevent the player from flying backward
-        //Debug.Log(verticalMovement);
-        Debug.Log(transform.rotation.eulerAngles.x);
-        if (transform.rotation.eulerAngles.x >= 315 || transform.rotation.eulerAngles.x <= 45) {
+
+        //Debug.Log(transform.rotation.eulerAngles.x);
+        if (transform.rotation.eulerAngles.x >= 316 || transform.rotation.eulerAngles.x <= 0) {
             xChange += verticalMovement;
         } 
-        else if (transform.rotation.eulerAngles.x >= 45 && transform.rotation.eulerAngles.x < 180 && verticalMovement < 0)
+        else if (transform.rotation.eulerAngles.x >= 0 && transform.rotation.eulerAngles.x < 180 && verticalMovement < 0)
         {
             xChange += verticalMovement;
         }
-        else if (transform.rotation.eulerAngles.x <= 315 && transform.rotation.eulerAngles.x > 180 && verticalMovement > 0)
+        else if (transform.rotation.eulerAngles.x <= 316 && transform.rotation.eulerAngles.x > 180 && verticalMovement > 0)
         {
             xChange += verticalMovement;
         }
@@ -78,6 +77,9 @@ public class PlayerController : MonoBehaviour
             rigidBody.AddForce(new Vector3(magX, 1, magZ) * 5000, ForceMode.Impulse);
         }
 
+        // Update flare text 
+        textManager.UpdateFlareText(1);
+
         // Update the player position
         //transform.position = transform.position + movement;
         double velocity = Mathf.Sqrt(Mathf.Pow(rigidBody.velocity.x, 2) + Mathf.Pow(rigidBody.velocity.z, 2));
@@ -111,5 +113,7 @@ public class PlayerController : MonoBehaviour
         // Get the player transform
         Vector3 playerTransform = transform.position;
         textManager.UpdateCoordinateText(playerTransform);
+        Vector3 playerRotation = transform.rotation.eulerAngles;
+        textManager.UpdateRotationText(playerRotation);
     }
 }

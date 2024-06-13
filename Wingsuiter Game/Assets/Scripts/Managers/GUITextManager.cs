@@ -7,8 +7,21 @@ using TMPro;
 public class GUITextManager : MonoBehaviour
 {
     public TMP_Text coordinateText;
+    public TMP_Text rotationText;
+    public TMP_Text flareText;
     public TMP_Text speedText;
     public TMP_Text coinText;
+
+    public void UpdateFlareText(int time)
+    {
+        if (time == 0) {
+            flareText.text = "Flare: <color=\"green\">Ready</color>";
+        } 
+        else
+        {
+            flareText.text = $"Flare: <color=\"red\">{time}s</color>";
+        }
+    }
 
     /// <summary>
     /// 
@@ -36,6 +49,27 @@ public class GUITextManager : MonoBehaviour
 
         // Update the coordinates text with the player's current coordinates
         coordinateText.text = $"({xPosition}, {yPosition}, {zPosition})";
+    }
+
+    private int ClampRotation(int rotation)
+    {
+        if (rotation > 180)
+        {
+            return (rotation - 360);
+        }
+        return rotation;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="playerRotation"></param>
+    public void UpdateRotationText(Vector3 playerRotation)
+    {
+        int xRotation = ClampRotation((int)playerRotation.x);
+        int yRotation = ClampRotation((int)playerRotation.y);
+        int zRotation = ClampRotation((int)playerRotation.z);
+        rotationText.text = $"({xRotation}, {yRotation}, {zRotation})";
     }
 
     void ResetCoinTextSize()
