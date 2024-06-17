@@ -12,14 +12,19 @@ public class GUITextManager : MonoBehaviour
     public TMP_Text speedText;
     public TMP_Text coinText;
 
-    public void UpdateFlareText(int time)
+    public void UpdateFlareText(int time, int delay)
     {
+        // Calculate the green value
+        float greenValue = (float) (delay - time) / delay;
+
+        // Set the current colour
+        Color currentColour = new Color(1, greenValue, 0.2f);
         if (time == 0) {
             flareText.text = "Flare: <color=\"green\">Ready</color>";
         } 
         else
         {
-            flareText.text = $"Flare: <color=\"red\">{time}s</color>";
+            flareText.text = $"Flare: <color=#{ColorUtility.ToHtmlStringRGBA(currentColour)}>{time}s</color>";
         }
     }
 

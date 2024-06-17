@@ -9,9 +9,15 @@ public class PlayerController : MonoBehaviour
     public Utility utility;
 
     // Declare the magnitude for the X movement
-    const float xMagnitude = 1;
+    private const float xMagnitude = 1;
     // Declare the magnitude for the Y movement 
-    const float yMagnitude = -0.1f;
+    private const float yMagnitude = -0.1f;
+
+    // Time between each flare
+    private const int FLARE_DELAY = 10;
+
+    // Manage the last time the flare was fired
+    private float lastFlareTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -69,16 +75,29 @@ public class PlayerController : MonoBehaviour
         forwardDirection.y = 0;
         rigidBody.AddForce(forwardDirection * 100, ForceMode.Impulse);
 
-        // Detect if the player presses the F key (to flare)
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            float magX = Mathf.Sin(utility.ConvertToRadians(transform.rotation.eulerAngles.y));
-            float magZ = Mathf.Cos(utility.ConvertToRadians(transform.rotation.eulerAngles.y));
-            rigidBody.AddForce(new Vector3(magX, 1, magZ) * 5000, ForceMode.Impulse);
-        }
+        float currentTime = Time.time;
+        float timeSinceFlare = currentTime - lastFlareTime;
 
         // Update flare text 
-        textManager.UpdateFlareText(1);
+        if (timeSinceFlare < FLARE_DELAY)
+        {
+            int nextFlareTime = (int) Mathf.Ceil(FLARE_DELAY - timeSinceFlare);
+            textManager.UpdateFlareText(nextFlareTime, FLARE_DELAY);
+        }
+        else
+        {
+            textManager.UpdateFlareText(0, FLARE_DELAY);
+        }
+
+        // Detect if the player presses the F key (to flare)
+        if (Input.GetKeyDown(KeyCode.F) && timeSinceFlare > FLARE_DELAY)
+        {
+            Debug.Log("Flared");
+            lastFlareTime = Time.time;
+            float magX = Mathf.Sin(utility.ConvertToRadians(transform.rotation.eulerAngles.y));
+            float magZ = Mathf.Cos(utility.ConvertToRadians(transform.rotation.eulerAngles.y));
+            rigidBody.AddForce(new Vector3(magX, 1, magZ) * 10000, ForceMode.Impulse);
+        }
 
         // Update the player position
         //transform.position = transform.position + movement;
