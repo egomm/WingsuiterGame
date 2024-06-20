@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseGameManager : MonoBehaviour
 {
@@ -25,6 +26,17 @@ public class PauseGameManager : MonoBehaviour
         // Unfreeze the game
         Time.timeScale = 1;
         pausePanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ExitGame()
+    {
+        // Unfgreeze the game
+        ResumeGame();
+        // Load the main menu scene
+        SceneManager.LoadScene(sceneName: "Main Menu");
     }
 
     private void Update()
