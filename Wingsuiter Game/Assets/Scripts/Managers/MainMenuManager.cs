@@ -11,6 +11,11 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene(sceneName: "Game");
     }
 
+    public void UpgradeWingsuit()
+    {
+        SceneManager.LoadScene(sceneName: "Upgrade Menu");
+    }
+
     public void QuitGame()
     {
         // Quit the game
