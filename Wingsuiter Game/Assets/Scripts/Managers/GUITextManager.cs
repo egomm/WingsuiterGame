@@ -88,19 +88,13 @@ public class GUITextManager : MonoBehaviour
     /// <param name="changeInCoins"></param>
     public void UpdateCoinText(int changeInCoins)
     {
-        // Ensure that the coinText is not empty
-        if (coinText.text.Length > 0)
-        {
-            // Get the current amount of coins
-            int coinAmount = int.Parse(coinText.text);
-            // Update the coin amount
-            coinAmount += changeInCoins;
-            // Update the coin text
-            coinText.text = coinAmount.ToString();
-            // Temporarily increase the font size of the coinAmount
-            coinText.fontSize = 22;
-            // Set the font size back to normal in 0.1s
-            Invoke("ResetCoinTextSize", 0.05f);
-        }
+        // Update the coin amount
+        DataManager.coinCount += changeInCoins;
+        // Update the coin text
+        coinText.text = DataManager.coinCount.ToString();
+        // Temporarily increase the font size of the coinAmount
+        coinText.fontSize = 22;
+        // Set the font size back to normal in 0.1s
+        Invoke("ResetCoinTextSize", 0.05f);
     }
 }
