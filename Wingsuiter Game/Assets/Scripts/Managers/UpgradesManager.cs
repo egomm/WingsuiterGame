@@ -32,8 +32,8 @@ public class UpgradesManager : MonoBehaviour
 
     // Colours for the button 
     // Note: need to divide by 255 since C# measures colour between 0 and 1
-    private Color greenColour = new Color(3/255, 200/255, 25/255);
-    private Color redColour = new Color(255/255, 71/255, 71/255);
+    private Color greenColour = new Color((float) 3 / 255, (float) 200 / 255, (float) 25 / 255);
+    private Color redColour = new Color((float) 255 / 255, (float) 0 / 255, (float) 0 / 255);
 
     /// <summary>
     /// 

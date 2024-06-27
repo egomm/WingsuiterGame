@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         transform.rotation = Quaternion.Euler(-45, 90, 90);
+        lastFlareTime = 0;
     }
 
     // Update is called once per frame at fixed intervals
