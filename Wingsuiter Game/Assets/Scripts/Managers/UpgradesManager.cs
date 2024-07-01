@@ -25,6 +25,16 @@ public class UpgradesManager : MonoBehaviour
     public TMP_Text movabilityUpgradeText;
     public TMP_Text flareUpgradeText;
 
+    // Text for the upgrade levels
+    public TMP_Text coinLevelText;
+    public TMP_Text movabilityLevelText;
+    public TMP_Text flareLevelText;
+
+    // Text for the upgrade confirmations
+    public TMP_Text coinConfirmationText;
+    public TMP_Text movabilityConfirmationText;
+    public TMP_Text flareConfirmationText;
+
     // Upgrade costs
     private int coinMultiplierCost;
     private int movabilityCost;
@@ -51,6 +61,19 @@ public class UpgradesManager : MonoBehaviour
     /// </summary>
     private void UpdateUpgradeButtons()
     {
+        // Update the balance text appropraitely
+        coinText.text = DataManager.coinCount.ToString();
+
+        // Upgrade the text for the upgrades
+        coinLevelText.text = $"LEVEL {DataManager.coinMultiplierLevel}";
+        movabilityLevelText.text = $"LEVEL {DataManager.movabilityLevel}";
+        flareUpgradeText.text = $"LEVEL {DataManager.flareCooldownLevel}";
+
+        // Upgrade the text for the upgrade confirmations
+        coinConfirmationText.text = $"Upgrade Coin Multiplier to Level {DataManager.coinMultiplierLevel + 1}";
+        movabilityConfirmationText.text = $"Upgrade Movability to Level {DataManager.movabilityLevel + 1}";
+        flareConfirmationText.text = $"Upgrade Flare Cooldown to Level {DataManager.flareCooldownLevel + 1}";
+
         // Check if the user can afford each upgrade
         coinMultiplierCost = CalculateUpgradeCost(DataManager.coinMultiplierLevel);
         movabilityCost = CalculateUpgradeCost(DataManager.movabilityLevel);
@@ -61,10 +84,37 @@ public class UpgradesManager : MonoBehaviour
         movabilityUpgradeText.text = movabilityCost.ToString();
         flareUpgradeText.text = flareCooldownCost.ToString();
 
-        // Set the colour of the buttons to green if the player can afford the upgrade, else set the colour to red
-        Color coinUpgradeColour = (DataManager.coinCount >= coinMultiplierCost) ? greenColour : redColour;
-        Color movabilityUpgradeColour = (DataManager.coinCount >= movabilityCost) ? greenColour : redColour;
-        Color flareUpgradeColour = (DataManager.coinCount >= flareCooldownCost) ? greenColour : redColour;
+        // Disable all of the buttons by default
+        Color coinUpgradeColour = redColour;
+        coinUpgradeButton.enabled = false;
+        Color movabilityUpgradeColour = redColour;
+        movabilityUpgradeButton.enabled = false;
+        Color flareUpgradeColour = redColour;
+        flareUpgradeButton.enabled = false;
+
+        // Check if the buttons should be enabled
+        bool coinUpgradeEnabled = DataManager.coinCount >= coinMultiplierCost;
+        bool movabilityUpgradeEnabled = DataManager.coinCount >= movabilityCost;
+        bool flareUpgradeEnabled = DataManager.coinCount >= flareCooldownCost;
+
+        // Enable that buttons that should be enabled
+        if (coinUpgradeEnabled)
+        {
+            coinUpgradeColour = greenColour;
+            coinUpgradeButton.enabled = true;
+        }
+
+        if (movabilityUpgradeEnabled)
+        {
+            movabilityUpgradeColour = greenColour;
+            movabilityUpgradeButton.enabled = true;
+        }
+
+        if (flareUpgradeEnabled)
+        {
+            flareUpgradeColour = greenColour;
+            flareUpgradeButton.enabled = true;
+        }
 
         // Update the colour of the buttons
         coinUpgradeButton.GetComponent<Image>().color = coinUpgradeColour;
@@ -74,8 +124,6 @@ public class UpgradesManager : MonoBehaviour
 
     void Start()
     {
-        // Update the balance text appropraitely
-        coinText.text = DataManager.coinCount.ToString();
         // 
         UpdateUpgradeButtons();
     }
@@ -121,8 +169,20 @@ public class UpgradesManager : MonoBehaviour
         SceneManager.LoadScene(sceneName: "Main Menu");
     }
 
+    /// <summary>
+    /// This will only be called if the users balance is sufficient
+    /// </summary>
     public void UpgradeCoinMultiplier()
     {
+        // Subtract the cost from the user's balance
+        DataManager.coinCount -= coinMultiplierCost;
+        // Upgrade the coin multiplier
+        DataManager.coinMultiplierLevel++;
 
+        // Update the upgrade buttons
+        UpdateUpgradeButtons();
+
+        // Close the panel
+        coinPanel.SetActive(false);
     }
 }

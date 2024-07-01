@@ -33,8 +33,8 @@ public class CoinManager : MonoBehaviour
         {
             // Update the last update time
             lastUpdateTime = Time.time;
-            // Update the coin text appropriately
-            textManager.UpdateCoinText(COINS_PER_SECOND);
+            // Update the coin text appropriately (based on the level of the coin multiplier)
+            textManager.UpdateCoinText(COINS_PER_SECOND + DataManager.coinMultiplierLevel - 1);
         }
     }
 }

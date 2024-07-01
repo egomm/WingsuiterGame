@@ -23,7 +23,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         transform.rotation = Quaternion.Euler(-45, 90, 90);
-        lastFlareTime = 0;
+        // Get the current time
+        float currentTime = Time.time;
+        // Update the last flare time (with floor to prevent minor loading issues)
+        lastFlareTime = Mathf.Floor(currentTime);
     }
 
     // Update is called once per frame at fixed intervals
