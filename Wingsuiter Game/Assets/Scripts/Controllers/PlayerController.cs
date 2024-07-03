@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private const float yMagnitude = -0.1f;
 
     // Time between each flare
-    private const int FLARE_DELAY = 10;
+    private const int FLARE_DELAY = 20;
 
     // Manage the last time the flare was fired
     private float lastFlareTime = 0;
@@ -77,7 +77,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 forwardDirection = transform.forward;
         forwardDirection.y = 0;
-        rigidBody.AddForce(forwardDirection * 100, ForceMode.Impulse);
+        // Speed is adjusted for the movability level
+        float speedMultiplier = 1 + (DataManager.movabilityLevel - 1) * 0.04f;
+        // Move the player (the player should move irrespective of whether they are pressing forward or not)
+        rigidBody.AddForce(forwardDirection * 100 * speedMultiplier, ForceMode.Impulse);
 
         float currentTime = Time.time;
         float timeSinceFlare = currentTime - lastFlareTime;
@@ -96,11 +99,10 @@ public class PlayerController : MonoBehaviour
         // Detect if the player presses the F key (to flare)
         if (Input.GetKeyDown(KeyCode.F) && timeSinceFlare > FLARE_DELAY)
         {
-            Debug.Log("Flared");
             lastFlareTime = Time.time;
             float magX = Mathf.Sin(utility.ConvertToRadians(transform.rotation.eulerAngles.y));
             float magZ = Mathf.Cos(utility.ConvertToRadians(transform.rotation.eulerAngles.y));
-            rigidBody.AddForce(new Vector3(magX, 1, magZ) * 10000, ForceMode.Impulse);
+            rigidBody.AddForce(new Vector3(magX, 1, magZ) * 20000, ForceMode.Impulse);
         }
 
         // Update the player position

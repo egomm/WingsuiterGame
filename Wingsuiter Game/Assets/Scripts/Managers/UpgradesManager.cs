@@ -35,6 +35,11 @@ public class UpgradesManager : MonoBehaviour
     public TMP_Text movabilityConfirmationText;
     public TMP_Text flareConfirmationText;
 
+    // Text for the upgrade perks
+    public TMP_Text coinUpgradePerks;
+    public TMP_Text movabilityUpgradePerks;
+    public TMP_Text flareUpgradePerks;
+
     // Upgrade costs
     private int coinMultiplierCost;
     private int movabilityCost;
@@ -69,10 +74,27 @@ public class UpgradesManager : MonoBehaviour
         movabilityLevelText.text = $"LEVEL {DataManager.movabilityLevel}";
         flareUpgradeText.text = $"LEVEL {DataManager.flareCooldownLevel}";
 
-        // Upgrade the text for the upgrade confirmations
+        // Update the text for the upgrade confirmations
         coinConfirmationText.text = $"Upgrade Coin Multiplier to Level {DataManager.coinMultiplierLevel + 1}";
         movabilityConfirmationText.text = $"Upgrade Movability to Level {DataManager.movabilityLevel + 1}";
         flareConfirmationText.text = $"Upgrade Flare Cooldown to Level {DataManager.flareCooldownLevel + 1}";
+
+        // Calculate the current amount of coins per second and the amount at the following level
+        int currentCoinsPerSecond = DataManager.baseCoinsPerSecond + (DataManager.coinMultiplierLevel - 1) * DataManager.additionalCoinsPerSecond;
+        int nextCoinsPerSecond = currentCoinsPerSecond + DataManager.additionalCoinsPerSecond;
+
+        // Calculate the current maximum speed multiplier and the multiplier at the following level
+        float currentMaxSpeedMultiplier = DataManager.baseMaxSpeedMultiplier + (DataManager.movabilityLevel - 1) * DataManager.additionalMaxSpeedMultiplier;
+        float nextMaxSpeedMultiplier = currentMaxSpeedMultiplier + DataManager.additionalMaxSpeedMultiplier;
+
+        // Calculate the current flare cooldown and the flare cooldown at the following level
+        float currentFlareCooldown = DataManager.baseFlareCooldown + (DataManager.flareCooldownLevel - 1) * DataManager.additionalFlareCooldown;
+        float nextFlareCooldown = currentFlareCooldown + DataManager.additionalFlareCooldown;
+
+        // Update the text for the perks
+        coinUpgradePerks.text = $"{currentCoinsPerSecond} coins/second -> {nextCoinsPerSecond} coins/second";
+        movabilityUpgradePerks.text = $"{currentMaxSpeedMultiplier:F2}x max speed -> {nextMaxSpeedMultiplier:F2}x max speed"; // Round to 2dp
+        flareUpgradePerks.text = $"{currentFlareCooldown:F2} seconds -> {nextFlareCooldown:F2} seconds"; // Round to 2dp
 
         // Check if the user can afford each upgrade
         coinMultiplierCost = CalculateUpgradeCost(DataManager.coinMultiplierLevel);
@@ -170,7 +192,7 @@ public class UpgradesManager : MonoBehaviour
     }
 
     /// <summary>
-    /// This will only be called if the users balance is sufficient
+    /// Note: This will only be called if the users balance is sufficient
     /// </summary>
     public void UpgradeCoinMultiplier()
     {
@@ -183,6 +205,40 @@ public class UpgradesManager : MonoBehaviour
         UpdateUpgradeButtons();
 
         // Close the panel
-        coinPanel.SetActive(false);
+        CloseCoinPanel();
+    }
+
+    /// <summary>
+    /// Note: This will only be called if the users balance is sufficient
+    /// </summary>
+    public void UpgradeMovability()
+    {
+        // Subtract the cost from the user's balance
+        DataManager.coinCount -= movabilityCost;
+        // Upgrade the movability
+        DataManager.movabilityLevel++;
+
+        // Update the upgrade buttons
+        UpdateUpgradeButtons();
+
+        // Close the panel
+        CloseMovabilityPanel();
+    }
+
+    /// <summary>
+    /// Note: This will only be called if the users balance is sufficient
+    /// </summary>
+    public void UpgradeFlareCooldown()
+    {
+        // Subtract the cost from the user's balance
+        DataManager.coinCount -= flareCooldownCost;
+        // Upgrade the flare cooldown
+        DataManager.flareCooldownLevel++;
+
+        // Update the upgrade buttons
+        UpdateUpgradeButtons();
+
+        // Close the panel
+        CloseFlarePanel();
     }
 }
