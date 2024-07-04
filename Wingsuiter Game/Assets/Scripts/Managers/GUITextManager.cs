@@ -12,7 +12,7 @@ public class GUITextManager : MonoBehaviour
     public TMP_Text speedText;
     public TMP_Text coinText;
 
-    public void UpdateFlareText(int time, int delay)
+    public void UpdateFlareText(int time, float delay)
     {
         // Calculate the green value
         float greenValue = (float) (delay - time) / delay;

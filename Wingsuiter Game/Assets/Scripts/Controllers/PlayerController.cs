@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private const float yMagnitude = -0.1f;
 
     // Time between each flare
-    private const int FLARE_DELAY = 20;
+    private float FLARE_DELAY = DataManager.BASE_FLARE_COOLDOWN + ((DataManager.flareCooldownLevel - 1) * DataManager.ADDITIONAL_FLARE_COOLDOWN);
 
     // Manage the last time the flare was fired
     private float lastFlareTime = 0;

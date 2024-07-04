@@ -49,6 +49,7 @@ public class UpgradesManager : MonoBehaviour
     // Note: need to divide by 255 since C# measures colour between 0 and 1
     private Color greenColour = new Color((float) 3 / 255, (float) 200 / 255, (float) 25 / 255);
     private Color redColour = new Color((float) 255 / 255, (float) 0 / 255, (float) 0 / 255);
+    private Color goldColour = new Color((float) 255 / 255, (float) 215 / 255, (float) 0 / 255);
 
     /// <summary>
     /// 
@@ -72,7 +73,7 @@ public class UpgradesManager : MonoBehaviour
         // Upgrade the text for the upgrades
         coinLevelText.text = $"LEVEL {DataManager.coinMultiplierLevel}";
         movabilityLevelText.text = $"LEVEL {DataManager.movabilityLevel}";
-        flareUpgradeText.text = $"LEVEL {DataManager.flareCooldownLevel}";
+        flareLevelText.text = $"LEVEL {DataManager.flareCooldownLevel}";
 
         // Update the text for the upgrade confirmations
         coinConfirmationText.text = $"Upgrade Coin Multiplier to Level {DataManager.coinMultiplierLevel + 1}";
@@ -80,16 +81,16 @@ public class UpgradesManager : MonoBehaviour
         flareConfirmationText.text = $"Upgrade Flare Cooldown to Level {DataManager.flareCooldownLevel + 1}";
 
         // Calculate the current amount of coins per second and the amount at the following level
-        int currentCoinsPerSecond = DataManager.baseCoinsPerSecond + (DataManager.coinMultiplierLevel - 1) * DataManager.additionalCoinsPerSecond;
-        int nextCoinsPerSecond = currentCoinsPerSecond + DataManager.additionalCoinsPerSecond;
+        int currentCoinsPerSecond = DataManager.BASE_COINS_PER_SECOND + (DataManager.coinMultiplierLevel - 1) * DataManager.ADDITIONAL_COINS_PER_SECOND;
+        int nextCoinsPerSecond = currentCoinsPerSecond + DataManager.ADDITIONAL_COINS_PER_SECOND;
 
         // Calculate the current maximum speed multiplier and the multiplier at the following level
-        float currentMaxSpeedMultiplier = DataManager.baseMaxSpeedMultiplier + (DataManager.movabilityLevel - 1) * DataManager.additionalMaxSpeedMultiplier;
-        float nextMaxSpeedMultiplier = currentMaxSpeedMultiplier + DataManager.additionalMaxSpeedMultiplier;
+        float currentMaxSpeedMultiplier = DataManager.BASE_MAX_SPEED_MULTIPLIER + (DataManager.movabilityLevel - 1) * DataManager.ADDITIONAL_MAX_SPEED_MULTIPLIER;
+        float nextMaxSpeedMultiplier = currentMaxSpeedMultiplier + DataManager.ADDITIONAL_MAX_SPEED_MULTIPLIER;
 
         // Calculate the current flare cooldown and the flare cooldown at the following level
-        float currentFlareCooldown = DataManager.baseFlareCooldown + (DataManager.flareCooldownLevel - 1) * DataManager.additionalFlareCooldown;
-        float nextFlareCooldown = currentFlareCooldown + DataManager.additionalFlareCooldown;
+        float currentFlareCooldown = DataManager.BASE_FLARE_COOLDOWN + (DataManager.flareCooldownLevel - 1) * DataManager.ADDITIONAL_FLARE_COOLDOWN;
+        float nextFlareCooldown = currentFlareCooldown + DataManager.ADDITIONAL_FLARE_COOLDOWN;
 
         // Update the text for the perks
         coinUpgradePerks.text = $"{currentCoinsPerSecond} coins/second -> {nextCoinsPerSecond} coins/second";
@@ -119,23 +120,47 @@ public class UpgradesManager : MonoBehaviour
         bool movabilityUpgradeEnabled = DataManager.coinCount >= movabilityCost;
         bool flareUpgradeEnabled = DataManager.coinCount >= flareCooldownCost;
 
+        // Check if the upgrade is at the maximum level
+        bool coinUpgradeMax = DataManager.coinMultiplierLevel == DataManager.MAXIMUM_UPGRADE_LEVEL;
+        bool movabilityUpgradeMax = DataManager.movabilityLevel == DataManager.MAXIMUM_UPGRADE_LEVEL;
+        bool flareUpgradeMax = DataManager.flareCooldownLevel == DataManager.MAXIMUM_UPGRADE_LEVEL;
+
         // Enable that buttons that should be enabled
-        if (coinUpgradeEnabled)
+        if (coinUpgradeEnabled && !coinUpgradeMax)
         {
             coinUpgradeColour = greenColour;
             coinUpgradeButton.enabled = true;
         }
 
-        if (movabilityUpgradeEnabled)
+        if (movabilityUpgradeEnabled && !movabilityUpgradeMax)
         {
             movabilityUpgradeColour = greenColour;
             movabilityUpgradeButton.enabled = true;
         }
 
-        if (flareUpgradeEnabled)
+        if (flareUpgradeEnabled && !flareUpgradeMax)
         {
             flareUpgradeColour = greenColour;
             flareUpgradeButton.enabled = true;
+        }
+
+        // If upgrade is at the maximum level
+        if (coinUpgradeMax)
+        {
+            coinUpgradeColour = goldColour;
+            coinUpgradeText.text = "MAX";
+        }
+
+        if (movabilityUpgradeMax)
+        {
+            movabilityUpgradeColour = goldColour;
+            movabilityUpgradeText.text = "MAX";
+        }
+
+        if (flareUpgradeMax)
+        {
+            flareUpgradeColour = goldColour;
+            flareUpgradeText.text = "MAX";
         }
 
         // Update the colour of the buttons
