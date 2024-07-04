@@ -1,6 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System;
+
+[Serializable]
+public struct GameData
+{
+
+}
+
 
 public class DataManager : MonoBehaviour
 {
@@ -18,11 +28,71 @@ public class DataManager : MonoBehaviour
     // Maximum upgrade level (upgrades max out at level 101)
     public const int MAXIMUM_UPGRADE_LEVEL = 101;
 
-
     // Declare variables for the data so that they are accessible from any class (ie. are static)
     public static int coinCount = 0;
     public static int coinMultiplierLevel = 1;
     public static int movabilityLevel = 1;
     public static int flareCooldownLevel = 1;
 
+    private static string dataDirectoryPath = "GameSaves";
+    private static string dataFileName = "GameData";
+
+    //public static Test test;
+
+    // Save data
+    public static void SaveData()
+    {
+        Debug.Log("Called");
+        // Create directory if it does not already exist
+        if (!Directory.Exists(dataDirectoryPath))
+        {
+            Directory.CreateDirectory(dataDirectoryPath);
+        }
+
+        // Initalise the binary formatter
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        // Get the file path (.bin format)
+        FileStream binaryFile = File.Create(dataDirectoryPath + "/" + dataFileName + ".bin");
+
+        Test test = new Test();
+        test.coin = 22;
+
+        // Seralise the data so that it can be written to the file
+        binaryFormatter.Serialize(binaryFile, test);
+
+        // Close the file
+        binaryFile.Close();
+
+        Debug.Log("Saved");
+    }
+
+    /// <summary>
+    /// TODO: add try catch system/check if file exists
+    /// </summary>
+    public static void LoadData()
+    {
+        Debug.Log("Called");
+        try
+        {
+            // Initalise the binary formatter
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+            // Get the data file
+            FileStream dataFile = File.Open(dataDirectoryPath + "/" + dataFileName + ".bin", FileMode.Open);
+
+            // Deseralise the data to get the data
+            Test gameData = (Test) binaryFormatter.Deserialize(dataFile);
+
+            // Logging...
+            Debug.Log("Coins: " + gameData.coin);
+
+            // Close the data file
+            dataFile.Close();
+        } 
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
+    }
 }

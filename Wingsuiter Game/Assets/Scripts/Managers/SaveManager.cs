@@ -6,24 +6,10 @@ using System.IO;
 
 public class SaveManager : MonoBehaviour
 {
-    private string dataDirectoryPath = "";
-    private string dataFileName = "";
 
-    // Constructor for managing the saving of the files
-    public SaveManager(string dataDirectoryPath, string dataFileName)
-    {
-        this.dataDirectoryPath = dataDirectoryPath;
-        this.dataFileName = dataFileName;
-    }
-
-    // Load the data
-    /*public GameData LoadData()
-    {
-
-    }*/
 
     // Save data
-    public void SaveData(string data)
+/*    public void SaveData(string data)
     {
         // Get the path of the file from the directory + the file name
         string filePath = Path.Combine(dataDirectoryPath, dataFileName);
@@ -47,5 +33,5 @@ public class SaveManager : MonoBehaviour
         {
             Debug.LogError($"Error on saving path to file: {ex}");
         }
-    }
+    }*/
 }
