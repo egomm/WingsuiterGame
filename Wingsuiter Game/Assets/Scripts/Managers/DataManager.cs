@@ -8,12 +8,18 @@ using System;
 [Serializable]
 public struct GameData
 {
-
+    public int coinCount;
+    public int coinMultiplierLevel;
+    public int movabilityLevel;
+    public int flareCooldownLevel;
 }
 
 
 public class DataManager : MonoBehaviour
 {
+    // Manage if the data has been loaded
+    public static bool dataLoaded = false;
+
     /* Constant values (Note: a const object is always static - https://stackoverflow.com/questions/408192/why-cant-i-have-public-static-const-string-s-stuff-in-my-class) */
     // Perks of each upgrade at the base level (1)
     public const int BASE_COINS_PER_SECOND = 10;
@@ -55,11 +61,14 @@ public class DataManager : MonoBehaviour
         // Get the file path (.bin format)
         FileStream binaryFile = File.Create(dataDirectoryPath + "/" + dataFileName + ".bin");
 
-        Test test = new Test();
-        test.coin = 22;
+        GameData gameData = new GameData();
+        gameData.coinCount = coinCount;
+        gameData.coinMultiplierLevel = coinMultiplierLevel;
+        gameData.movabilityLevel = movabilityLevel;
+        gameData.flareCooldownLevel = flareCooldownLevel;
 
         // Seralise the data so that it can be written to the file
-        binaryFormatter.Serialize(binaryFile, test);
+        binaryFormatter.Serialize(binaryFile, gameData);
 
         // Close the file
         binaryFile.Close();
@@ -82,13 +91,17 @@ public class DataManager : MonoBehaviour
             FileStream dataFile = File.Open(dataDirectoryPath + "/" + dataFileName + ".bin", FileMode.Open);
 
             // Deseralise the data to get the data
-            Test gameData = (Test) binaryFormatter.Deserialize(dataFile);
-
-            // Logging...
-            Debug.Log("Coins: " + gameData.coin);
+            GameData gameData = (GameData) binaryFormatter.Deserialize(dataFile);
+            coinCount = gameData.coinCount;
+            coinMultiplierLevel = gameData.coinMultiplierLevel;
+            movabilityLevel = gameData.movabilityLevel;
+            flareCooldownLevel = gameData.flareCooldownLevel;
 
             // Close the data file
             dataFile.Close();
+            
+            // Data has been loaded (no need to load again)
+            dataLoaded = true;
         } 
         catch (Exception ex)
         {

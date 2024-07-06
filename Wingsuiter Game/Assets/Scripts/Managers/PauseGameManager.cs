@@ -33,8 +33,6 @@ public class PauseGameManager : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        // Save the data
-        DataManager.SaveData();
         // Unfreeze the game
         ResumeGame();
         // Load the main menu scene
