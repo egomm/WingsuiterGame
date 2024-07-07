@@ -5,16 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    private void Start()
-    {
-        // Load the data if it hasn't already been loaded
-        if (!DataManager.dataLoaded)
-        {
-            Debug.Log("CALLED");
-            DataManager.LoadData();
-        }
-    }
-
     public void PlayGame()
     {
         // Load the game scene

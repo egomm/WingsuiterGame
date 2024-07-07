@@ -17,9 +17,6 @@ public struct GameData
 
 public class DataManager : MonoBehaviour
 {
-    // Manage if the data has been loaded
-    public static bool dataLoaded = false;
-
     /* Constant values (Note: a const object is always static - https://stackoverflow.com/questions/408192/why-cant-i-have-public-static-const-string-s-stuff-in-my-class) */
     // Perks of each upgrade at the base level (1)
     public const int BASE_COINS_PER_SECOND = 10;
@@ -99,9 +96,6 @@ public class DataManager : MonoBehaviour
 
             // Close the data file
             dataFile.Close();
-            
-            // Data has been loaded (no need to load again)
-            dataLoaded = true;
         } 
         catch (Exception ex)
         {

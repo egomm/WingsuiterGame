@@ -82,6 +82,11 @@ public class GUITextManager : MonoBehaviour
         coinText.fontSize = 20;
     }
 
+    public void LoadCoinText()
+    {
+        coinText.text = DataManager.coinCount.ToString();
+    }
+
     /// <summary>
     /// 
     /// </summary>

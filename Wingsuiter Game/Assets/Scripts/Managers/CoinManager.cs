@@ -12,7 +12,7 @@ public class CoinManager : MonoBehaviour
     // Set the last update time
     float lastUpdateTime = 0;
 
-    // Get the coin manager
+    // Get the coin manager (TODO: make static for consistency and standards)
     public GUITextManager textManager;
 
     // Get the average distance from the ground in the last second
@@ -20,7 +20,8 @@ public class CoinManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Load the coin text
+        textManager.LoadCoinText();
     }
 
     // Update is called once per frame
