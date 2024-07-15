@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
         float currentTime = Time.time;
         // Update the last flare time (with floor to prevent minor loading issues)
         lastFlareTime = Mathf.Floor(currentTime);
+
+        //
+        WorldGenerator.GenerateWorld();
     }
 
     // Update is called once per frame at fixed intervals
