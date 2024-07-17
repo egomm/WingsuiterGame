@@ -3054,9 +3054,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41d87ddbdfc0cdb4889c92d88ddb6e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldWidth: 0
-  worldHeight: 0
-  noiseScale: 0
+  regions:
+  - name: Water
+    height: 0.2
+    colour: {r: 0.33490568, g: 0.6315432, b: 1, a: 0}
+  - name: Land
+    height: 1
+    colour: {r: 0, g: 0.7075472, b: 0.027294599, a: 0}
 --- !u!114 &1894666224
 MonoBehaviour:
   m_ObjectHideFlags: 0

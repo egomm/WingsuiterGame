@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WorldDisplay : MonoBehaviour
 {
     public Renderer textureRender;
 
-    public void DrawNoiseMap(float[,] noiseMap)
+    public void DrawTexture(Texture2D texture)
+    {
+        textureRender.sharedMaterial.mainTexture = texture;
+        textureRender.transform.localScale = new Vector3 (texture.width, 1, texture.height);
+    }
+
+    /*public void DrawNoiseMap(float[,] noiseMap)
     {
         int width = noiseMap.GetLength(0);
         int height = noiseMap.GetLength(1);
@@ -31,5 +38,5 @@ public class WorldDisplay : MonoBehaviour
         textureRender.sharedMaterial.mainTexture = texture;
 
         textureRender.transform.localScale = new Vector3(width, 1, height);
-    }
+    }*/
 }
