@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public GUITextManager textManager;
     public Rigidbody rigidBody;
     public Utility utility;
+    public WorldGenerator worldGenerator;
 
     // Declare the magnitude for the X movement
     private const float xMagnitude = 1;
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
         lastFlareTime = Mathf.Floor(currentTime);
 
         //
-        WorldGenerator.GenerateWorld();
+        worldGenerator.GenerateWorld();
     }
 
     // Update is called once per frame at fixed intervals
