@@ -38,7 +38,8 @@ public class WorldGenerator : MonoBehaviour
     {
         new TerrainType("Water", 0.2f, Color.blue),
         new TerrainType("Forest", 0.5f, Color.green),
-        new TerrainType("Mountain", 1.0f, Color.gray)
+        new TerrainType("Mountain", 0.9f, Color.gray),
+        new TerrainType("Snow", 1.0f, Color.white)
     };
 
     public void GenerateWorld()

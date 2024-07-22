@@ -66,7 +66,8 @@ public class MeshGenerator : MonoBehaviour
                 float halfWidth = (width - 1) / 2f;
                 float halfHeight = (height - 1) / 2f;
                 meshData.vertices[vertexIndex] = new Vector3(x - halfWidth, heightCurve.Evaluate(heightMap[x, y]) * heightMultiplier, y - halfHeight);
-                meshData.uvs[vertexIndex] = new Vector2(1f - (float) x / width, 1f - (float) y / height);
+                //meshData.uvs[vertexIndex] = new Vector2(1f - (float) x / width, 1f - (float) y / height);
+                meshData.uvs[vertexIndex] = new Vector2((float)x / width, (float)y / height);
 
                 // Ignore right & bottom edge vertices
                 if (x < width - 1 && y < height - 1)
