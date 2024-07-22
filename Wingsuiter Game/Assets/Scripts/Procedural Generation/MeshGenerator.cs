@@ -50,6 +50,7 @@ public class MeshGenerator : MonoBehaviour
     {
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
+        Debug.Log($"Width: {width}, Height: {height}");
         // Left
         float topLeftX = (width - 1) / -2f;
         // Up

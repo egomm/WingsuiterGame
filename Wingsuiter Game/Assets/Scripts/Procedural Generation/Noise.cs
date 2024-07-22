@@ -13,16 +13,21 @@ public class Noise : MonoBehaviour
     /// <returns></returns>
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistence, float lacunarity)
     {
+        Debug.Log($"WIDTH: {mapWidth}, HEIGHT: {mapHeight}");
         float[,] noiseMap = new float[mapWidth, mapHeight];
 
+        Random.InitState(2);
         // Get a random...
-        System.Random psuedoRandomNumber = new System.Random(seed);
+        //System.Random psuedoRandomNumber = new System.Random(seed);
+
         Vector2[] octaveOffsets = new Vector2[octaves];
 
         for (int i = 0; i < octaves; i++)
         {
-            float offsetX = psuedoRandomNumber.Next(-100000, 100000);
-            float offsetY = psuedoRandomNumber.Next(-100000, 100000);
+            //float offsetX = psuedoRandomNumber.Next(-100000, 100000);
+            //float offsetY = psuedoRandomNumber.Next(-100000, 100000);
+            float offsetX = Random.Range(-100000, 100000);
+            float offsetY = Random.Range(-100000, 100000);
             octaveOffsets[i] = new Vector2(offsetX, offsetY);
         }
 

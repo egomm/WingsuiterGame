@@ -21,17 +21,18 @@ public struct TerrainType
 
 public class WorldGenerator : MonoBehaviour
 {
-    public int worldWidth = 100;
-    public int worldHeight = 100;
-    public float noiseScale = 10f;
+    public static int worldWidth = 100;
+    public static int worldHeight = 100;
+    public static float noiseScale = 10f;
 
-    public int octaves = 4;
-    public float persistence = 0.5f;
-    public float lacunarity = 0.2f;
+    public static int octaves = 4;
+    // Can change for detail
+    public static float persistence = 0.5f;
+    public static float lacunarity = 0.2f;
 
     public int seed = 0;
 
-    public float meshHeightMultiplier = 10;
+    public static float meshHeightMultiplier = 10;
     public AnimationCurve meshHeightCurve;
 
     public static TerrainType[] regions = new TerrainType[]
@@ -44,6 +45,7 @@ public class WorldGenerator : MonoBehaviour
 
     public void GenerateWorld()
     {
+        Debug.Log($"_Width: {worldWidth}, _Height: {worldHeight}");
         // Get the noise map from the noise class
         float[,] noiseMap = Noise.GenerateNoiseMap(worldWidth, worldHeight, seed, noiseScale, octaves, persistence, lacunarity);
 
@@ -72,6 +74,7 @@ public class WorldGenerator : MonoBehaviour
         WorldDisplay display = FindObjectOfType<WorldDisplay>();
         display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, worldWidth, worldHeight));
         //display.DrawNoiseMap(noiseMap);
+        Debug.Log($"Noise map width: {noiseMap.GetLength(0)}, Noise map height: {noiseMap.GetLength(1)}");
         display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColourMap(colourMap, worldWidth, worldHeight));
     }
 }
