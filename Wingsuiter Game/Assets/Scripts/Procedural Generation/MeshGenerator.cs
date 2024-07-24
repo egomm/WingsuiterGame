@@ -46,7 +46,7 @@ public class MeshGenerator : MonoBehaviour
 
     }
 
-    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve)
+    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, int detail)
     {
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
@@ -55,12 +55,15 @@ public class MeshGenerator : MonoBehaviour
         // Up
         float topLeftZ = (height - 1) / 2f;
 
-        MeshData meshData = new MeshData(width, height);
+        int meshIncrement = (detail <= 0) ? 1 : detail * 2;
+        int verticesPerLine = (width - 1) / meshIncrement + 1;
+
+        MeshData meshData = new MeshData(verticesPerLine, verticesPerLine);
         int vertexIndex = 0;
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < height; y += meshIncrement)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < width; x += meshIncrement)
             {
                 //
                 float halfWidth = (width - 1) / 2f;
@@ -72,8 +75,8 @@ public class MeshGenerator : MonoBehaviour
                 // Ignore right & bottom edge vertices
                 if (x < width - 1 && y < height - 1)
                 {
-                    meshData.AddTriangle(vertexIndex, vertexIndex + width, vertexIndex + width + 1);
-                    meshData.AddTriangle(vertexIndex, vertexIndex + width + 1, vertexIndex + 1);
+                    meshData.AddTriangle(vertexIndex, vertexIndex + verticesPerLine, vertexIndex + verticesPerLine + 1);
+                    meshData.AddTriangle(vertexIndex, vertexIndex + verticesPerLine + 1, vertexIndex + 1);
                 }
 
                 vertexIndex++;

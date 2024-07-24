@@ -951,7 +951,7 @@ Transform:
   m_GameObject: {fileID: 678943473}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.165943, y: -500, z: 343.08636}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3103,6 +3103,7 @@ GameObject:
   - component: {fileID: 1894666222}
   - component: {fileID: 1894666223}
   - component: {fileID: 1894666224}
+  - component: {fileID: 1894666225}
   m_Layer: 0
   m_Name: World Generator
   m_TagString: Untagged
@@ -3195,6 +3196,19 @@ MonoBehaviour:
   textureRender: {fileID: 1433131295}
   meshFilter: {fileID: 678943476}
   meshRenderer: {fileID: 678943475}
+--- !u!114 &1894666225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894666221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2700d365ddadc74f88801226428ada4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1992125059}
 --- !u!1 &1986007705
 GameObject:
   m_ObjectHideFlags: 0
@@ -3380,6 +3394,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4493585093827132993, guid: 159c16e93a7e3c84dbbc4b6026871678, type: 3}
+--- !u!4 &1992125059 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 526bafa75d890d1408c8d2634a7760df, type: 3}
+  m_PrefabInstance: {fileID: 1223779735}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2083130808
 GameObject:
   m_ObjectHideFlags: 0

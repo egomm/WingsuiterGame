@@ -21,9 +21,10 @@ public struct TerrainType
 
 public class WorldGenerator : MonoBehaviour
 {
-    public static int worldWidth = 100;
-    public static int worldHeight = 100;
-    public static float noiseScale = 10f;
+    // Note: unity limits this to 255 and 241 = 240 + 1 and 240 is divisble by 1, 2, 4, 6, 8, 10, 12...
+    public const int mapChunkSize = 241;
+    public static int detail = 0;
+    public static float noiseScale = 100f;
 
     public static int octaves = 4;
     // Can change for detail
@@ -32,7 +33,7 @@ public class WorldGenerator : MonoBehaviour
 
     public int seed = 0;
 
-    public static float meshHeightMultiplier = 10;
+    public static float meshHeightMultiplier = 100;
     public AnimationCurve meshHeightCurve;
 
     public static TerrainType[] regions = new TerrainType[]
@@ -46,13 +47,13 @@ public class WorldGenerator : MonoBehaviour
     public void GenerateWorld()
     {
         // Get the noise map from the noise class
-        float[,] noiseMap = Noise.GenerateNoiseMap(worldWidth, worldHeight, seed, noiseScale, octaves, persistence, lacunarity);
+        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistence, lacunarity);
 
-        Color[] colourMap = new Color[worldWidth * worldHeight];
+        Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
         // Iterate over the noise map
-        for (int x = 0; x < worldWidth; x++)
+        for (int x = 0; x < mapChunkSize; x++)
         {
-            for (int y = 0; y < worldHeight; y++)
+            for (int y = 0; y < mapChunkSize; y++)
             {
                 float currentHeight = noiseMap[x, y];
 
@@ -63,7 +64,7 @@ public class WorldGenerator : MonoBehaviour
                     if (currentHeight <= region.height)
                     {
                         // Get the colour...
-                        colourMap[y * worldWidth + x] = region.colour;
+                        colourMap[y * mapChunkSize + x] = region.colour;
                         break;
                     }
                 }
@@ -71,8 +72,8 @@ public class WorldGenerator : MonoBehaviour
         }
 
         WorldDisplay display = FindObjectOfType<WorldDisplay>();
-        display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, worldWidth, worldHeight));
+        display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
         //display.DrawNoiseMap(noiseMap);
-        display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColourMap(colourMap, worldWidth, worldHeight));
+        display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, detail), TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
     }
 }
