@@ -45,7 +45,6 @@ public class WorldGenerator : MonoBehaviour
 
     public void GenerateWorld()
     {
-        Debug.Log($"_Width: {worldWidth}, _Height: {worldHeight}");
         // Get the noise map from the noise class
         float[,] noiseMap = Noise.GenerateNoiseMap(worldWidth, worldHeight, seed, noiseScale, octaves, persistence, lacunarity);
 
@@ -74,7 +73,6 @@ public class WorldGenerator : MonoBehaviour
         WorldDisplay display = FindObjectOfType<WorldDisplay>();
         display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, worldWidth, worldHeight));
         //display.DrawNoiseMap(noiseMap);
-        Debug.Log($"Noise map width: {noiseMap.GetLength(0)}, Noise map height: {noiseMap.GetLength(1)}");
         display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColourMap(colourMap, worldWidth, worldHeight));
     }
 }

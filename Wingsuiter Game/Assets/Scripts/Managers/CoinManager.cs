@@ -12,7 +12,7 @@ public class CoinManager : MonoBehaviour
     // Set the last update time
     float lastUpdateTime = 0;
 
-    // Get the coin manager (TODO: make static for consistency and standards)
+    // Get the coin manager class
     public GUITextManager textManager;
 
     // Get the average distance from the ground in the last second

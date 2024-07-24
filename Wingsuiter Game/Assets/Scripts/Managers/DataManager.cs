@@ -14,10 +14,9 @@ public struct GameData
     public int flareCooldownLevel;
 }
 
-
-public class DataManager : MonoBehaviour
+public class DataManager 
 {
-    /* Constant values (Note: a const object is always static - https://stackoverflow.com/questions/408192/why-cant-i-have-public-static-const-string-s-stuff-in-my-class) */
+    /* Constant values (Note: a const object is always static) */
     // Perks of each upgrade at the base level (1)
     public const int BASE_COINS_PER_SECOND = 10;
     public const float BASE_MAX_SPEED_MULTIPLIER = 1;
@@ -40,12 +39,11 @@ public class DataManager : MonoBehaviour
     private static string dataDirectoryPath = "GameSaves";
     private static string dataFileName = "GameData";
 
-    //public static Test test;
-
-    // Save data
+    /// <summary>
+    /// Save the user data to the binary data file
+    /// </summary>
     public static void SaveData()
     {
-        Debug.Log("Called");
         // Create directory if it does not already exist
         if (!Directory.Exists(dataDirectoryPath))
         {
@@ -56,9 +54,13 @@ public class DataManager : MonoBehaviour
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
         // Get the file path (.bin format)
+        // Note: this overrides the existing binary file
+        // TODO: this may not be adequate in the future
         FileStream binaryFile = File.Create(dataDirectoryPath + "/" + dataFileName + ".bin");
 
+        // Create a new game data object
         GameData gameData = new GameData();
+        // Add the player's data to the game data object
         gameData.coinCount = coinCount;
         gameData.coinMultiplierLevel = coinMultiplierLevel;
         gameData.movabilityLevel = movabilityLevel;
@@ -69,16 +71,13 @@ public class DataManager : MonoBehaviour
 
         // Close the file
         binaryFile.Close();
-
-        Debug.Log("Saved");
     }
 
     /// <summary>
-    /// TODO: add try catch system/check if file exists
+    /// Load the player data from the binary data file
     /// </summary>
     public static void LoadData()
     {
-        Debug.Log("Called");
         try
         {
             // Initalise the binary formatter
@@ -99,7 +98,8 @@ public class DataManager : MonoBehaviour
         } 
         catch (Exception ex)
         {
-            Debug.Log(ex);
+            // Log the exception
+            Debug.LogError($"Error on saving path to file: {ex}");
         }
     }
 }

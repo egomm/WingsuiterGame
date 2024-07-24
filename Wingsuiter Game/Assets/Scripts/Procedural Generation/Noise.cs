@@ -13,7 +13,6 @@ public class Noise : MonoBehaviour
     /// <returns></returns>
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistence, float lacunarity)
     {
-        Debug.Log($"WIDTH: {mapWidth}, HEIGHT: {mapHeight}");
         float[,] noiseMap = new float[mapWidth, mapHeight];
 
         Random.InitState(2);

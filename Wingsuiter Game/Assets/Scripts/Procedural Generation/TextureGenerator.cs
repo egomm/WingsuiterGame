@@ -6,7 +6,6 @@ public class TextureGenerator : MonoBehaviour
 {
     public static Texture2D TextureFromColourMap(Color[] colourMap, int width, int height)
     {
-        Debug.Log($"Texture width: {width} , Texture height: {height}");
         Texture2D texture = new Texture2D(width, height);
         //
         texture.filterMode = FilterMode.Point;

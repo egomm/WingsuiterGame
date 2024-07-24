@@ -42,8 +42,6 @@ public class PlayerController : MonoBehaviour
         // Detect if the player moves their tail up/down
         float xChange = 0;
 
-
-        //Debug.Log(transform.rotation.eulerAngles.x);
         if (transform.rotation.eulerAngles.x >= 316 || transform.rotation.eulerAngles.x <= 0) {
             xChange += verticalMovement;
         } 
@@ -54,29 +52,6 @@ public class PlayerController : MonoBehaviour
         else if (transform.rotation.eulerAngles.x <= 316 && transform.rotation.eulerAngles.x > 180 && verticalMovement > 0)
         {
             xChange += verticalMovement;
-        }
-
-
-
-        /*if ((transform.rotation.eulerAngles.x >= 315 || transform.rotation.eulerAngles.x <= 45) || 
-            (transform.rotation.eulerAngles.x < 315 && verticalMovement < 0) || 
-            (transform.rotation.eulerAngles.x > 45 && verticalMovement > 0))
-        {
-            Debug.Log("?");
-            Debug.Log(verticalMovement);
-            Debug.Log("1st" + (transform.rotation.eulerAngles.x >= 315 || transform.rotation.eulerAngles.x <= 45));
-            Debug.Log("2nd" + (transform.rotation.eulerAngles.x < 315 && verticalMovement > 0));
-            Debug.Log("3rd" + (transform.rotation.eulerAngles.x > 45 && verticalMovement < 0));
-            xChange += verticalMovement;
-        }*/
-
-
-        if (verticalMovement > 0)
-        {
-            //transform.Translate(Vector3.forward * Time.deltaTime * verticalMovement * 100;
-            // Add the x magnitude to the movement vector
-            //rigidBody.AddForce(100, 0, 0, ForceMode.Impulse
-
         }
 
         Vector3 forwardDirection = transform.forward;
@@ -110,13 +85,9 @@ public class PlayerController : MonoBehaviour
         }
 
         // Update the player position
-        //transform.position = transform.position + movement;
         double velocity = Mathf.Sqrt(Mathf.Pow(rigidBody.velocity.x, 2) + Mathf.Pow(rigidBody.velocity.z, 2));
         // Update the speed text
         textManager.UpdateSpeedText(velocity);
-
-        // Rotate based on the horizontal movement
-        //transform.Rotate(new Vector3(0, 50 * horizontalMovement * Time.deltaTime, horizontalMovement * Time.deltaTime * -100));
         
         // Get the change in the Z axis
         float zChange = horizontalMovement * Time.deltaTime * -40 * (Mathf.Abs(Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.PI / 180)) / 2 + 1.5f);
@@ -128,16 +99,7 @@ public class PlayerController : MonoBehaviour
             yChange += Mathf.Sin(2 * transform.rotation.eulerAngles.z * Mathf.PI / 180) / 5;
         }
 
-
-        /*if (transform.rotation.eulerAngles.x > 315)
-        {
-            xChange -= 1f;
-        }
-
-        Debug.Log(xChange);*/
-
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x + xChange, transform.rotation.eulerAngles.y + (yChange), transform.rotation.eulerAngles.z + zChange);
-        //-horizontalMovement * Time.deltaTime
 
         // Get the player transform
         Vector3 playerTransform = transform.position;

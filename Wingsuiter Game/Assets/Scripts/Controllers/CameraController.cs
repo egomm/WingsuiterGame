@@ -19,20 +19,10 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //float offsetXAngle = player.transform.rotation.eulerAngles.x;
-
-
         float offsetX = offset.x * Mathf.Sin(utility.ConvertToRadians(player.transform.rotation.eulerAngles.y));
         float offsetZ = offset.magnitude * -Mathf.Cos(utility.ConvertToRadians(player.transform.rotation.eulerAngles.y));
 
         float offsetY = 0;
-
-        /*offsetX += 5.5f * Mathf.Sin(utility.ConvertToRadians(offsetXAngle + 45));
-        Debug.Log(offsetXAngle + 45);
-        Debug.Log(utility.ConvertToRadians(offsetXAngle + 45));
-        Debug.Log(5.5f * Mathf.Sin(utility.ConvertToRadians(offsetXAngle + 45)));
-
-        float offsetY = 5.5f * Mathf.Sin(utility.ConvertToRadians(offsetXAngle + 45));*/
 
         transform.position = player.transform.position + new Vector3(offsetX, offset.y + offsetY, offsetZ);
 
