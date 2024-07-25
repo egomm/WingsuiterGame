@@ -1,27 +1,51 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class WorldManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private string worldNameInput;
+    private int seedInput;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void CreateWorld()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ReadWorldName(string s)
     {
-        
+
     }
 
+    public void ReadSeedInput(string s)
+    {
+        try
+        {
+            seedInput = int.Parse(s);
+            Debug.Log(seedInput);
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void OpenCreateWorldMenu()
     {
         SceneManager.LoadScene(sceneName: "World Creator");
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void ExitWorldSelector()
     {
         SceneManager.LoadScene(sceneName: "Main Menu");
