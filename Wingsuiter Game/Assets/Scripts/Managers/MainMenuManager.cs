@@ -8,7 +8,7 @@ public class MainMenuManager : MonoBehaviour
     public void PlayGame()
     {
         // Load the game scene
-        SceneManager.LoadScene(sceneName: "Game");
+        SceneManager.LoadScene(sceneName: "World Selector");
     }
 
     public void UpgradeWingsuit()

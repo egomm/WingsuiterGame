@@ -16,10 +16,10 @@ EditorBuildSettings:
     guid: 9183976fd84238e47bd8b714e3da0d88
   - enabled: 1
     path: Assets/Scenes/World Selector.unity
-    guid: 47c76ff153d61484cb66e3250905cc81
-  - enabled: 1
-    path: Assets/Scenes/World Create.unity
     guid: 6b4eb9461da47c94d9af8a109b55c225
+  - enabled: 1
+    path: Assets/Scenes/World Creator.unity
+    guid: 47c76ff153d61484cb66e3250905cc81
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab

@@ -31,7 +31,7 @@ public class TerrainGenerator : MonoBehaviour
 
     void UpdateVisibleChunks()
     {
-        for (int i = 0; i < terrainChunks.Count; i++)
+        for (int i = 0; i < activeChunks.Count; i++)
         {
             activeChunks[i].SetVisible(false);
         }

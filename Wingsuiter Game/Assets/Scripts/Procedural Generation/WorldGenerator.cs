@@ -24,7 +24,7 @@ public class WorldGenerator : MonoBehaviour
     // Note: unity limits this to 255 and 241 = 240 + 1 and 240 is divisble by 1, 2, 4, 6, 8, 10, 12...
     public const int mapChunkSize = 241;
     public static int detail = 0;
-    public static float noiseScale = 100f;
+    public static float noiseScale = 1000f;
 
     public static int octaves = 4;
     // Can change for detail
