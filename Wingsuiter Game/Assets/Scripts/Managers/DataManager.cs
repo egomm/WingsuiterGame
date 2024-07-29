@@ -12,6 +12,7 @@ public struct GameData
     public int coinMultiplierLevel;
     public int movabilityLevel;
     public int flareCooldownLevel;
+    public List<World> worldList;
 }
 
 public class DataManager 
@@ -35,6 +36,7 @@ public class DataManager
     public static int coinMultiplierLevel = 1;
     public static int movabilityLevel = 1;
     public static int flareCooldownLevel = 1;
+    public static List<World> worldList = new List<World>();
 
     private static string dataDirectoryPath = "GameSaves";
     private static string dataFileName = "GameData";
@@ -65,6 +67,7 @@ public class DataManager
         gameData.coinMultiplierLevel = coinMultiplierLevel;
         gameData.movabilityLevel = movabilityLevel;
         gameData.flareCooldownLevel = flareCooldownLevel;
+        gameData.worldList = worldList;
 
         // Seralise the data so that it can be written to the file
         binaryFormatter.Serialize(binaryFile, gameData);
@@ -92,6 +95,10 @@ public class DataManager
             coinMultiplierLevel = gameData.coinMultiplierLevel;
             movabilityLevel = gameData.movabilityLevel;
             flareCooldownLevel = gameData.flareCooldownLevel;
+            worldList = gameData.worldList;
+
+            // TODO: FOR TESTING
+            Debug.Log(worldList.Count);
 
             // Close the data file
             dataFile.Close();
