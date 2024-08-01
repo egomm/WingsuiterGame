@@ -98,7 +98,11 @@ public class DataManager
             worldList = gameData.worldList;
 
             // TODO: FOR TESTING
-            Debug.Log(worldList.Count);
+            foreach (World world in worldList)
+            {
+                Debug.Log($"World name: {world.worldName}, Seed: {world.seed}, Time: {world.time}");
+            }
+
 
             // Close the data file
             dataFile.Close();
@@ -106,7 +110,7 @@ public class DataManager
         catch (Exception ex)
         {
             // Log the exception
-            Debug.LogError($"Error on saving path to file: {ex}");
+            Debug.LogError($"Error on loading path from file: {ex}");
         }
     }
 }

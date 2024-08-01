@@ -49,7 +49,7 @@ public class WorldListManager : MonoBehaviour
                 }
                 else if (info.CompareTag("Last Opened"))
                 {
-                    info.text = $"Last Opened: ";
+                    info.text = $"Last Opened: {world.time}";
                 }
             }
         }

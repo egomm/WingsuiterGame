@@ -10,12 +10,14 @@ public class World
 {
     public string worldName;
     public int seed;
+    public DateTime time;
     
     // Create a constructor for the world information
     public World(string worldName, int seed)
     {
         this.worldName = worldName;
         this.seed = seed;
+        time = DateTime.Now;
     }
 }
 
