@@ -15,7 +15,8 @@ public class Noise : MonoBehaviour
     {
         float[,] noiseMap = new float[mapWidth, mapHeight];
 
-        Random.InitState(2);
+        //Random.InitState(2);
+        System.Random pseudoRandomNumber = new System.Random(seed);
         // Get a random...
         //System.Random psuedoRandomNumber = new System.Random(seed);
 
@@ -25,8 +26,10 @@ public class Noise : MonoBehaviour
         {
             //float offsetX = psuedoRandomNumber.Next(-100000, 100000);
             //float offsetY = psuedoRandomNumber.Next(-100000, 100000);
-            float offsetX = Random.Range(-100000, 100000);
-            float offsetY = Random.Range(-100000, 100000);
+            //float offsetX = Random.Range(-100000, 100000);
+            //float offsetY = Random.Range(-100000, 100000);
+            float offsetX = pseudoRandomNumber.Next(-100000, 100000);
+            float offsetY = pseudoRandomNumber.Next(-100000, 100000);
             octaveOffsets[i] = new Vector2(offsetX, offsetY);
         }
 

@@ -52,6 +52,8 @@ public class WorldGenerator : MonoBehaviour
     public static float meshHeightMultiplier = 100;
     public AnimationCurve meshHeightCurve;
 
+    public static WorldDisplay display;
+
     public static TerrainType[] regions = new TerrainType[]
     {
         new TerrainType("Water", 0.2f, Color.blue),
@@ -102,6 +104,11 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        display = FindObjectOfType<WorldDisplay>();
+    }
+
     private void Update()
     {
         // Check if the world data thread queue is not empty
@@ -143,7 +150,7 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        WorldDisplay display = FindObjectOfType<WorldDisplay>();
+        //WorldDisplay display = FindObjectOfType<WorldDisplay>();
         display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
         //display.DrawNoiseMap(noiseMap);
         display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, detail), TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));

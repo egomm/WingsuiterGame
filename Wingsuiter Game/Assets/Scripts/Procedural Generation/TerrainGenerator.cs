@@ -10,6 +10,7 @@ public class TerrainGenerator : MonoBehaviour
     public Transform player;
 
     public static Vector2 playerPosition;
+    static WorldGenerator worldGenerator;
     int chunkSize;
     int chunksVisible;
 
@@ -18,6 +19,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Start()
     {
+        worldGenerator = FindObjectOfType<WorldGenerator>();    
         // Each chunk is 240 x 240
         chunkSize = WorldGenerator.mapChunkSize - 1;
         chunksVisible = (int)maxView / chunkSize;
@@ -81,6 +83,13 @@ public class TerrainGenerator : MonoBehaviour
             meshObject.transform.localScale = Vector3.one * size / 10f;
             meshObject.transform.parent = parent;
             SetVisible(false);
+
+            worldGenerator.RequestWorldData(onWorldDataReceived);
+        }
+
+        void onWorldDataReceived(WorldData worldData)
+        {
+            Debug.Log("World data received");
         }
 
         public void UpdateChunk()
