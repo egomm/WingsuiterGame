@@ -260,8 +260,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: -6624868020622546057, guid: cffcfec194bfde340a69e9b09afe1d53, type: 3}
-        m_TargetAssemblyTypeName: Test, Assembly-CSharp
-        m_MethodName: Click
+        m_TargetAssemblyTypeName: WorldSelectorManager, Assembly-CSharp
+        m_MethodName: SelectWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -3718,7 +3718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5491363755407590335, guid: cffcfec194bfde340a69e9b09afe1d53, type: 3}
       propertyPath: m_Name
-      value: GameObject
+      value: World Selection
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cffcfec194bfde340a69e9b09afe1d53, type: 3}
