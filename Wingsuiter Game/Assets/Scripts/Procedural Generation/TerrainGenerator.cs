@@ -28,7 +28,7 @@ public class TerrainGenerator : MonoBehaviour
     private void Update()
     {
         playerPosition = new Vector2(player.position.x, player.position.z);
-        UpdateVisibleChunks();
+        //UpdateVisibleChunks();
     }
 
     void UpdateVisibleChunks()
@@ -51,6 +51,7 @@ public class TerrainGenerator : MonoBehaviour
                 // 
                 if (terrainChunks.ContainsKey(viewedChunkCoord))
                 {
+
                     terrainChunks[viewedChunkCoord].UpdateChunk();
                     if (terrainChunks[viewedChunkCoord].IsVisible())
                     {
@@ -59,7 +60,12 @@ public class TerrainGenerator : MonoBehaviour
                 } 
                 else
                 {
-                    terrainChunks.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, chunkSize, transform));
+                    // terrainChunks.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, chunkSize, transform));
+                    Debug.Log("Called to add a new chunk?");
+                    Debug.Log($"Coord: {viewedChunkCoord.x}, {viewedChunkCoord.y}");
+                    TerrainChunk newChunk = new TerrainChunk(240 * viewedChunkCoord, chunkSize, transform);
+                    terrainChunks.Add(viewedChunkCoord, newChunk);
+                    newChunk.Load();
                 }
             }
         }
@@ -70,6 +76,9 @@ public class TerrainGenerator : MonoBehaviour
         GameObject meshObject;
         public Vector2 position;
         Bounds bounds;
+
+        MeshRenderer renderer;
+        MeshFilter filter;
         
         public TerrainChunk(Vector2 coordinate, int size, Transform parent)
         {
@@ -77,19 +86,29 @@ public class TerrainGenerator : MonoBehaviour
             bounds = new Bounds(position, Vector2.one * size);
             Vector3 position3D = new Vector3(position.x, 0, position.y);
 
-            meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            meshObject = new GameObject("Chunk");//GameObject.CreatePrimitive(PrimitiveType.Plane);
+            renderer = meshObject.AddComponent<MeshRenderer>();
+            filter = meshObject.AddComponent<MeshFilter>();
+
             meshObject.transform.position = position3D;
             // Divided by 10 since the plane is 10 units by default
             meshObject.transform.localScale = Vector3.one * size / 10f;
             meshObject.transform.parent = parent;
             SetVisible(false);
 
-            worldGenerator.RequestWorldData(onWorldDataReceived);
+            worldGenerator.RequestWorldData();
         }
 
-        void onWorldDataReceived(WorldData worldData)
+        public void Load()
         {
-            Debug.Log("World data received");
+            worldGenerator.RequestWorldData();
+        }
+
+        void OnWorldDataReceived(WorldData worldData)
+        {
+            MeshData meshData = MeshGenerator.GenerateTerrainMesh(worldData.heightMap, WorldGenerator.meshHeightMultiplier, worldGenerator.meshHeightCurve, WorldGenerator.detail);
+            filter.mesh = meshData.CreateMesh();
+            SetVisible(true);
         }
 
         public void UpdateChunk()

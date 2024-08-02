@@ -8,18 +8,19 @@ public class TextureGenerator : MonoBehaviour
 
     public void Start()
     {
-        texture = new Texture2D(241, 241);
-        texture.filterMode = FilterMode.Point;
-        texture.wrapMode = TextureWrapMode.Clamp;
+
     }
 
     public static Texture2D TextureFromColourMap(Color[] colourMap, int width, int height)
     {
         //Texture2D texture = new Texture2D(width, height);
         //
-        
+
         //
-        
+        texture = new Texture2D(width, height);
+        texture.filterMode = FilterMode.Point;
+        texture.wrapMode = TextureWrapMode.Clamp;
+
         // TODO: attempt to use textures instead of colours?
         texture.SetPixels(colourMap);
         texture.Apply();

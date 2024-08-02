@@ -82,49 +82,10 @@ public class WorldGenerator : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="callback"></param>
-    public void RequestWorldData(Action<WorldData> callback)
+    public void RequestWorldData()
     {
-        //
-        ThreadStart threadStart = delegate
-        {
-            WorldDataThread(callback);
-        };
+        // Generate the world data
 
-        //
-        new Thread(threadStart).Start();
-    }
-
-    void WorldDataThread(Action<WorldData> callback)
-    {
-        WorldData worldData = GenerateWorldData();
-        // Ensure that only one thread can 
-        lock (worldDataThreadQueue)
-        {
-            worldDataThreadQueue.Enqueue(new WorldThreadInfo<WorldData>(callback, worldData));
-        }
-    }
-
-    private void Start()
-    {
-        display = FindObjectOfType<WorldDisplay>();
-    }
-
-    private void Update()
-    {
-        // Check if the world data thread queue is not empty
-        if (worldDataThreadQueue.Count > 0)
-        {
-            for (int i = 0; i < worldDataThreadQueue.Count; i++)
-            {
-                //
-                WorldThreadInfo<WorldData> threadInfo = worldDataThreadQueue.Dequeue();
-                threadInfo.callback(threadInfo.parameter);
-            }
-        }
-    }
-
-    public WorldData GenerateWorldData()
-    {
         // Get the noise map from the noise class
         float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistence, lacunarity);
 
@@ -150,11 +111,53 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
+        Texture2D texture = TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize);
+        MeshData meshData = MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, detail);
+
+        WorldData worldData = DrawWorldData(colourMap, noiseMap, texture, meshData);
+        MeshData meshInfo = MeshGenerator.GenerateTerrainMesh(worldData.heightMap, meshHeightMultiplier, meshHeightCurve, detail);
+    }
+
+    private void Start()
+    {
+        display = FindObjectOfType<WorldDisplay>();
+    }
+
+    public WorldData DrawWorldData(Color[] colourMap, float[,] noiseMap, Texture2D texture, MeshData meshData)
+    {
         //WorldDisplay display = FindObjectOfType<WorldDisplay>();
-        display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
+        display.DrawTexture(texture);
         //display.DrawNoiseMap(noiseMap);
-        display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, detail), TextureGenerator.TextureFromColourMap(colourMap, mapChunkSize, mapChunkSize));
+        display.DrawMesh(meshData, texture);
 
         return new WorldData(noiseMap, colourMap);
+    }
+
+    public void GenerateWorldData()
+    {
+        // Get the noise map from the noise class
+        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistence, lacunarity);
+
+        Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
+        // Iterate over the noise map
+        for (int x = 0; x < mapChunkSize; x++)
+        {
+            for (int y = 0; y < mapChunkSize; y++)
+            {
+                float currentHeight = noiseMap[x, y];
+
+                // Iterate through the regions
+                foreach (TerrainType region in regions)
+                {
+                    // 
+                    if (currentHeight <= region.height)
+                    {
+                        // Get the colour...
+                        colourMap[y * mapChunkSize + x] = region.colour;
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
