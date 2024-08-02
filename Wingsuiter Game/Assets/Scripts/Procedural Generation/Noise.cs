@@ -2,74 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Noise : MonoBehaviour
+public static class Noise
 {
-    /// <summary>
-    /// https://www.youtube.com/watch?v=MRNFcywkUSA
-    /// </summary>
-    /// <param name="mapWidth"></param>
-    /// <param name="mapHeight"></param>
-    /// <param name="scale"></param>
-    /// <returns></returns>
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistence, float lacunarity)
     {
         float[,] noiseMap = new float[mapWidth, mapHeight];
-
-        //Random.InitState(2);
-        System.Random pseudoRandomNumber = new System.Random(seed);
-        // Get a random...
-        //System.Random psuedoRandomNumber = new System.Random(seed);
-
+        System.Random random = new System.Random(seed);
         Vector2[] octaveOffsets = new Vector2[octaves];
 
         for (int i = 0; i < octaves; i++)
         {
-            //float offsetX = psuedoRandomNumber.Next(-100000, 100000);
-            //float offsetY = psuedoRandomNumber.Next(-100000, 100000);
-            //float offsetX = Random.Range(-100000, 100000);
-            //float offsetY = Random.Range(-100000, 100000);
-            float offsetX = pseudoRandomNumber.Next(-100000, 100000);
-            float offsetY = pseudoRandomNumber.Next(-100000, 100000);
+            float offsetX = random.Next(-100000, 100000);
+            float offsetY = random.Next(-100000, 100000);
             octaveOffsets[i] = new Vector2(offsetX, offsetY);
         }
 
-        // Manage the max and min noise of the noise map
         float maxNoiseHeight = float.MinValue;
         float minNoiseHeight = float.MaxValue;
+        float halfWidth = mapWidth / 2f;
+        float halfHeight = mapHeight / 2f;
 
-        float halfMapWidth = mapWidth / 2f;
-        float halfMapHeight = mapHeight / 2f;
-
-        for (int x = 0; x < mapWidth; x++)
-        { 
-            for (int y = 0; y < mapHeight; y++)
+        for (int y = 0; y < mapHeight; y++)
+        {
+            for (int x = 0; x < mapWidth; x++)
             {
-
                 float amplitude = 1;
                 float frequency = 1;
                 float noiseHeight = 0;
 
-                // Iterate over each octave (
                 for (int i = 0; i < octaves; i++)
                 {
-                    float sampleX = (x - halfMapWidth) / scale * frequency + octaveOffsets[i].x;
-                    float sampleY = (y - halfMapHeight) / scale * frequency + octaveOffsets[i].y;
-                    
-                    // https://docs.unity3d.com/ScriptReference/Mathf.PerlinNoise.html
+                    float sampleX = (x - halfWidth) / scale * frequency + octaveOffsets[i].x;
+                    float sampleY = (y - halfHeight) / scale * frequency + octaveOffsets[i].y;
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
-                    //noiseMap[x, y] = perlinValue;
-                    //
                     noiseHeight += perlinValue * amplitude;
 
                     amplitude *= persistence;
                     frequency *= lacunarity;
                 }
 
-                if (noiseHeight  > maxNoiseHeight)
+                if (noiseHeight > maxNoiseHeight)
                 {
                     maxNoiseHeight = noiseHeight;
                 }
-                else if (noiseHeight < minNoiseHeight)
+                if (noiseHeight < minNoiseHeight)
                 {
                     minNoiseHeight = noiseHeight;
                 }
@@ -78,14 +54,12 @@ public class Noise : MonoBehaviour
             }
         }
 
-        // Iterate over the noise map
-        for (int x = 0; x < mapWidth; x++)
+        for (int y = 0; y < mapHeight; y++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int x = 0; x < mapWidth; x++)
             {
-                // Normalise...
                 noiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[x, y]);
-            } 
+            }
         }
 
         return noiseMap;

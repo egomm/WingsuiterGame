@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         lastFlareTime = Mathf.Floor(currentTime);
 
         //
-        worldGenerator.GenerateWorldData();
+        //worldGenerator.GenerateWorldData();
     }
 
     // Update is called once per frame at fixed intervals
