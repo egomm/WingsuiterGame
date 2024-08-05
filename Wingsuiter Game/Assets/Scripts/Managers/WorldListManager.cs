@@ -57,6 +57,10 @@ public class WorldListManager : MonoBehaviour
         //for (int i = 0; i < 10; i++)
         Debug.Log(DataManager.worldList.Count);
 
+        // Clear the current world information
+        worldButtonInformation.Clear();
+        selectedWorldName = null;
+
         foreach (World world in DataManager.worldList)
         {
             Button worldObj = Instantiate(worldItem);
@@ -69,11 +73,8 @@ public class WorldListManager : MonoBehaviour
             worldObj.transform.SetParent(panel.transform);
             paddingObj.transform.SetParent(panel.transform);
 
-            if (!worldButtonInformation.ContainsKey(worldObj.name))
-            {
-                // Add this world information to the dictionary
-                worldButtonInformation.Add(worldObj.name, worldObj);
-            }
+            // Add this world information to the dictionary
+            worldButtonInformation.Add(worldObj.name, worldObj);
 
             TextMeshProUGUI[] worldInformation = worldObj.GetComponentsInChildren<TextMeshProUGUI>();
             foreach (TextMeshProUGUI info in worldInformation)
