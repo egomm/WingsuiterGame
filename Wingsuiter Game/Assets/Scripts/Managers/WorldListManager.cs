@@ -11,10 +11,38 @@ public class WorldListManager : MonoBehaviour
     public GameObject padding;
     public GameObject panel;
 
+    // Create a dictionary to store information about the world buttons
+    private static Dictionary<string, Button> worldButtonInformation = new Dictionary<string, Button>();
+    // Manage the currently selected world
+    private static string selectedWorldName;
 
-    public void HandleSelectWorld()
+    private static Color defaultWorldColour = new Color((float)240 / 255, (float)240 / 255, (float)240 / 255);
+    private static Color selectedWorldColour = new Color((float)200 / 255, (float)200 / 255, (float)200 / 255);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="worldName"></param>
+    public static void HandleSelectedWorld(string worldName)
     {
-        Debug.Log("Selected world");
+        // Ensure that this world name is valid
+        if (worldButtonInformation.ContainsKey(worldName))
+        {
+            Debug.Log("HI");
+            // Unselect the currently selected world
+            if (selectedWorldName != null)
+            {
+                Button selectedButton = worldButtonInformation[selectedWorldName];
+                selectedButton.image.color = defaultWorldColour;
+            }
+
+            // Select the clicked world
+            Button newSelectedButton = worldButtonInformation[worldName];
+            newSelectedButton.image.color = selectedWorldColour;
+
+            // Update the selected world name
+            selectedWorldName = worldName;
+        }
     }
 
 
@@ -28,6 +56,7 @@ public class WorldListManager : MonoBehaviour
         //Instantiate(worldItem, new Vector3(0, 0, 0), Quaternion.identity);
         //for (int i = 0; i < 10; i++)
         Debug.Log(DataManager.worldList.Count);
+
         foreach (World world in DataManager.worldList)
         {
             Button worldObj = Instantiate(worldItem);
@@ -39,6 +68,12 @@ public class WorldListManager : MonoBehaviour
             //newObj.transform.parent = GameObject.Find("Panel").transform;
             worldObj.transform.SetParent(panel.transform);
             paddingObj.transform.SetParent(panel.transform);
+
+            if (!worldButtonInformation.ContainsKey(worldObj.name))
+            {
+                // Add this world information to the dictionary
+                worldButtonInformation.Add(worldObj.name, worldObj);
+            }
 
             TextMeshProUGUI[] worldInformation = worldObj.GetComponentsInChildren<TextMeshProUGUI>();
             foreach (TextMeshProUGUI info in worldInformation)
@@ -52,6 +87,16 @@ public class WorldListManager : MonoBehaviour
                     info.text = $"Last Opened: {world.time}";
                 }
             }
+        }
+
+        // Select the first world
+        if (DataManager.worldList.Count > 0)
+        {
+            string firstWorld = DataManager.worldList[0].worldName;
+            Button selectedButton = worldButtonInformation[firstWorld];
+            selectedButton.image.color = selectedWorldColour;
+            selectedWorldName = firstWorld;
+            Debug.Log(firstWorld);
         }
         //}
     }

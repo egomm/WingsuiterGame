@@ -97,11 +97,8 @@ public class DataManager
             flareCooldownLevel = gameData.flareCooldownLevel;
             worldList = gameData.worldList;
 
-            // TODO: FOR TESTING
-            foreach (World world in worldList)
-            {
-                Debug.Log($"World name: {world.worldName}, Seed: {world.seed}, Time: {world.time}");
-            }
+            // Sort the world list by the last opened time
+            WorldManager.SortWorldList();
 
 
             // Close the data file

@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using System;
-using System.Threading;
-using System.Collections.Generic;
 
 public struct TerrainType
 {

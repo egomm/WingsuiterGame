@@ -8,5 +8,6 @@ public class WorldSelectorManager : MonoBehaviour
     public void SelectWorld()
     {
         Debug.Log($"Clicked: {EventSystem.current.currentSelectedGameObject.name}");
+        WorldListManager.HandleSelectedWorld(EventSystem.current.currentSelectedGameObject.name);
     }
 }

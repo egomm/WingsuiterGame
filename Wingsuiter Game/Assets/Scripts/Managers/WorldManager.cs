@@ -54,6 +54,16 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Order the world list such that the most recently opened/created world is displayed first in the world list.
+    /// This is done by comparing
+    /// </summary>
+    public static void SortWorldList()
+    {
+        //
+        DataManager.worldList.Sort((firstWorld, secondWorld) => DateTime.Compare(secondWorld.time, firstWorld.time));
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     public void CreateWorld()
@@ -69,6 +79,9 @@ public class WorldManager : MonoBehaviour
         World newWorld = new World(worldNameInput, seedInput);
         // Add the new world to the list of worlds
         DataManager.worldList.Add(newWorld);
+
+        // Sort the world list by the list opened time
+        SortWorldList();
 
         // Exit the world creator after the user has created a new world
         ExitWorldCreator();
