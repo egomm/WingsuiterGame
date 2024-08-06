@@ -22,6 +22,14 @@ public class WorldListManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
+    public void OpenWorld()
+    {
+        Debug.Log($"Selected world to open: {selectedWorldName}");
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="worldName"></param>
     public static void HandleSelectedWorld(string worldName)
     {

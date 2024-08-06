@@ -59,7 +59,7 @@ public class WorldManager : MonoBehaviour
     /// </summary>
     public static void SortWorldList()
     {
-        //
+        // Sort the world by the last opened/created time
         DataManager.worldList.Sort((firstWorld, secondWorld) => DateTime.Compare(secondWorld.time, firstWorld.time));
     }
 

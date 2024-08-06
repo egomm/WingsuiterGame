@@ -83,14 +83,19 @@ public class DataManager
     {
         try
         {
+            Debug.Log("Loading world data");
+
             // Initalise the binary formatter
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 
             // Get the data file
-            FileStream dataFile = File.Open(dataDirectoryPath + "/" + dataFileName + ".bin", FileMode.Open);
+            FileStream dataFile = File.Open(dataDirectoryPath + "/" + dataFileName + ".bin", FileMode.OpenOrCreate);
 
             // Deseralise the data to get the data
             GameData gameData = (GameData) binaryFormatter.Deserialize(dataFile);
+            // Close the data file
+            dataFile.Close();
+
             coinCount = gameData.coinCount;
             coinMultiplierLevel = gameData.coinMultiplierLevel;
             movabilityLevel = gameData.movabilityLevel;
@@ -99,10 +104,6 @@ public class DataManager
 
             // Sort the world list by the last opened time
             WorldManager.SortWorldList();
-
-
-            // Close the data file
-            dataFile.Close();
         } 
         catch (Exception ex)
         {
