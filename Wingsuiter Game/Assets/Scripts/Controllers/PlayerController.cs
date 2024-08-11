@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     public GUITextManager textManager;
     public Rigidbody rigidBody;
     public Utility utility;
-    public WorldGenerator worldGenerator;
 
     // Declare the magnitude for the X movement
     private const float xMagnitude = 1;
@@ -28,9 +27,6 @@ public class PlayerController : MonoBehaviour
         float currentTime = Time.time;
         // Update the last flare time (with floor to prevent minor loading issues)
         lastFlareTime = Mathf.Floor(currentTime);
-
-        //
-        //worldGenerator.GenerateWorldData();
     }
 
     // Update is called once per frame at fixed intervals
@@ -59,7 +55,7 @@ public class PlayerController : MonoBehaviour
         // Speed is adjusted for the movability level
         float speedMultiplier = 1 + (DataManager.movabilityLevel - 1) * 0.04f;
         // Move the player (the player should move irrespective of whether they are pressing forward or not)
-        rigidBody.AddForce(forwardDirection * 100 * speedMultiplier, ForceMode.Impulse);
+        rigidBody.AddForce(forwardDirection * 500 * speedMultiplier, ForceMode.Impulse);
 
         float currentTime = Time.time;
         float timeSinceFlare = currentTime - lastFlareTime;
@@ -96,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
         if (transform.rotation.eulerAngles.z != 90)
         {
-            yChange += Mathf.Sin(2 * transform.rotation.eulerAngles.z * Mathf.PI / 180) / 5;
+            yChange += Mathf.Sin(2 * transform.rotation.eulerAngles.z * Mathf.PI / 180) / 3;
         }
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x + xChange, transform.rotation.eulerAngles.y + (yChange), transform.rotation.eulerAngles.z + zChange);
