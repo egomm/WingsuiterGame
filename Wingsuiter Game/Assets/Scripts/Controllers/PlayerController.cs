@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GUITextManager textManager;
+    public DeathManager deathManager;
     public Rigidbody rigidBody;
     public Utility utility;
 
@@ -102,5 +103,11 @@ public class PlayerController : MonoBehaviour
         textManager.UpdateCoordinateText(playerTransform);
         Vector3 playerRotation = transform.rotation.eulerAngles;
         textManager.UpdateRotationText(playerRotation);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Collided!");
+        deathManager.OpenDeathPanel();
     }
 }
