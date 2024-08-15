@@ -34,8 +34,21 @@ public class CoinManager : MonoBehaviour
         {
             // Update the last update time
             lastUpdateTime = Time.time;
+
+            // Determine how many coins the player should earn
+            int coinsEarned = COINS_PER_SECOND + (DataManager.coinMultiplierLevel - 1);
+
+            // Get how much to multiply the coins earned by (depending on the distance)
+            float coinDistanceMultiplier = 1;
+            if (PlayerController.groundDistance <= 500) {
+                coinDistanceMultiplier += (500 - PlayerController.groundDistance) / 500;
+            }
+
+            // Scale the coins earned based on the distance from the ground
+            coinsEarned = (int) (coinsEarned * coinDistanceMultiplier);
+
             // Update the coin text appropriately (based on the level of the coin multiplier)
-            textManager.UpdateCoinText(COINS_PER_SECOND + DataManager.coinMultiplierLevel - 1);
+            textManager.UpdateCoinText(coinsEarned);
         }
     }
 }

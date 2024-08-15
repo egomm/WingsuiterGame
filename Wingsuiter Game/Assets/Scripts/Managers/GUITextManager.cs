@@ -11,6 +11,7 @@ public class GUITextManager : MonoBehaviour
     public TMP_Text flareText;
     public TMP_Text speedText;
     public TMP_Text coinText;
+    public TMP_Text groundText;
 
     // Manage the size of the coin (normally and when it is small)
     private const int COIN_SIZE = 22;
@@ -95,6 +96,44 @@ public class GUITextManager : MonoBehaviour
 
         // Set the rotation text
         rotationText.text = $"({xRotation}, {yRotation}, {zRotation})";
+    }
+
+
+    /// <summary>
+    /// This method updates the text for the distance that the player is from the ground. 
+    /// The colour of this text is adjusted dependent on how far the player is from the ground.
+    /// If the player is more than 1000 metres from the ground, the text will be green, else
+    /// the text will be between red (0m), yellow (500m), and green (1000m).
+    /// </summary>
+    /// <param name="distance"></param>
+    public void UpdateGroundText(float distance)
+    {
+        // Determine how green and red the ground text should be 
+        float greenValue = 1f;
+        float redValue = 0f;
+
+        if (distance < 500)
+        {
+            // Set the red value to 1 if the distance is less than 500
+            redValue = 1f;
+            // Scale the green value based on the distance
+            greenValue = distance / 500;
+        }
+        if (distance >= 500 && distance < 1000)
+        {
+            // Scale the red value based on the distance
+            redValue = 1 - (distance - 500) / 500;
+        }
+
+
+        // Set the current text colour for the ground text
+        Color currentColour = new Color(redValue, greenValue, 0);
+
+        // Round the distance to an integer
+        int roundedDistance = (int) distance;
+
+        // Set the ground text with the appropriate colour
+        groundText.text = $"Ground: <color=#{ColorUtility.ToHtmlStringRGBA(currentColour)}>{roundedDistance}m</color>";
     }
 
     /// <summary>

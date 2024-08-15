@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,7 +20,9 @@ public class PlayerController : MonoBehaviour
     private float FLARE_DELAY = DataManager.BASE_FLARE_COOLDOWN + ((DataManager.flareCooldownLevel - 1) * DataManager.ADDITIONAL_FLARE_COOLDOWN);
 
     // Manage the last time the flare was fired
-    private float lastFlareTime = 0;
+    public static float lastFlareTime = 0;
+
+    public static float groundDistance = float.MaxValue;
 
     // Start is called before the first frame update
     void Start()
@@ -103,6 +107,59 @@ public class PlayerController : MonoBehaviour
         textManager.UpdateCoordinateText(playerTransform);
         Vector3 playerRotation = transform.rotation.eulerAngles;
         textManager.UpdateRotationText(playerRotation);
+
+        MeshCollider[] meshColliders = FindObjectsOfType<MeshCollider>();
+
+        MeshCollider closestCollider = null;
+
+        // Store the distance of the closest mesh collider and vertex
+        float closestDistance = float.MaxValue;
+
+        // Find the closest mesh collider
+        foreach (MeshCollider meshCollider in meshColliders)
+        {
+            if (meshCollider.name != "Terrain Chunk") continue;
+
+            float distance = Vector3.Distance(transform.position, meshCollider.transform.position);
+            if (distance < closestDistance)
+            {
+                // Update the new closest collider
+                closestCollider = meshCollider;
+                closestDistance = distance;
+            }
+        }
+
+        if (closestCollider != null)
+        {
+            // Access the mesh of the closest mesh collider
+            Mesh mesh = closestCollider.sharedMesh;
+
+            if (mesh != null)
+            {
+                closestDistance = float.MaxValue;
+
+                // Iterate through each vertex in the mesh
+                foreach (Vector3 vertex in mesh.vertices)
+                {
+                    // Convert vertex from local space to world space
+                    Vector3 worldVertex = closestCollider.transform.TransformPoint(vertex);
+
+                    // Calculate the distance from the player to the vertex
+                    float distance = Vector3.Distance(transform.position, worldVertex);
+
+                    // Check if this is the closest vertex
+                    if (distance < closestDistance)
+                    {
+                        // Update the closest distance
+                        closestDistance = distance;
+                        groundDistance = distance;
+                    }
+                }
+
+                // Update the ground text
+                textManager.UpdateGroundText(closestDistance);
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

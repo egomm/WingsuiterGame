@@ -2839,7 +2839,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 125, y: 22.5}
+  m_SizeDelta: {x: 135, y: 22.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1443219103
 MonoBehaviour:
@@ -3458,7 +3458,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 120, y: 20}
+  m_SizeDelta: {x: 130, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1707829038
 MonoBehaviour:
@@ -3480,7 +3480,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Ground: <color="yellow">50m</color>'
+  m_text: 'Ground: <color="red">0m</color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4131,7 +4131,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!64 &1992125056
 MeshCollider:
@@ -4202,6 +4202,7 @@ MonoBehaviour:
   flareText: {fileID: 580069111}
   speedText: {fileID: 369212733}
   coinText: {fileID: 696546749}
+  groundText: {fileID: 1707829038}
 --- !u!1 &2111418844
 GameObject:
   m_ObjectHideFlags: 0
