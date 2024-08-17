@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class WorldListManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class WorldListManager : MonoBehaviour
     public Button worldItem;
     public GameObject padding;
     public GameObject panel;
+    public GameObject loadingBackground;
 
     // Create a dictionary to store information about the world buttons
     private static Dictionary<string, Button> worldButtonInformation = new Dictionary<string, Button>();
@@ -25,6 +27,24 @@ public class WorldListManager : MonoBehaviour
     public void OpenWorld()
     {
         Debug.Log($"Selected world to open: {selectedWorldName}");
+
+        // Find the world with this name
+        foreach (World world in DataManager.worldList)
+        {
+            // Check if the world has been found
+            if (world.worldName == selectedWorldName)
+            {
+                // Update the world appropriately
+                DataManager.currentWorld = world;
+                // Set the loading background to be visible
+                loadingBackground.SetActive(true);
+                // Switch to the game scene
+                SceneManager.LoadScene(sceneName: "Game");
+
+                // Exit the loop
+                break;
+            }
+        }
     }
 
     /// <summary>
@@ -57,6 +77,9 @@ public class WorldListManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the loading background to be invisible by default
+        //loadingBackground.SetActive(false);
+
         // Iterate over the each world in the world list from the data manager
         //foreach (World world in DataManager.worldList)
         //{

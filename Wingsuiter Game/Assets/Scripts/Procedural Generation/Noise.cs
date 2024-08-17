@@ -10,7 +10,7 @@ public static class Noise
 	public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, NoiseSettings settings, Vector2 sampleCentre) {
 		float[,] noiseMap = new float[mapWidth,mapHeight];
 
-		System.Random random = new System.Random (settings.seed);
+		System.Random random = new System.Random(DataManager.currentWorld.seed);
 		Vector2[] octaveOffsets = new Vector2[settings.octaves];
 
 		float maxPossibleHeight = 0;
@@ -79,7 +79,6 @@ public class NoiseSettings
 	public float persistance =.6f;
 	public float lacunarity = 2;
 
-	public int seed;
 	public Vector2 offset;
 
 	public void ValidateValues() 

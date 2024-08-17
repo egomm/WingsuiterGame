@@ -23,6 +23,24 @@ public class DeathManager : MonoBehaviour
 
         // Update the player's coin balance
         textManager.UpdateCoinText(-coinsLost);
+
+        // Set the last coordinates to the spawn coordinates
+        // Update the world information
+        foreach (World world in DataManager.worldList)
+        {
+            // Check if the current iteration matches the current world
+            if (DataManager.currentWorld.worldName == world.worldName)
+            {
+                // Update the spawn and last coordinates
+                DataManager.currentWorld.lastCoordinates = DataManager.currentWorld.spawnCoordinates;
+                world.lastCoordinates = world.spawnCoordinates;
+                // Update the last rotation
+                world.lastRotation = DataManager.BASE_ROTATION;
+
+                // Break from the loop
+                break;
+            }
+        }
     }
 
     public void CloseDeathPanel()
@@ -47,8 +65,12 @@ public class DeathManager : MonoBehaviour
 
     public void ExitToMainMenu()
     {
+
         // Set the last saved position as the world centre
         // Set the last saved rotation as the default rotation
+
+        // Unfreeze game
+        Time.timeScale = 1;
 
         // Change scenes to go to the main menu
         SceneManager.LoadScene(sceneName: "Main Menu");

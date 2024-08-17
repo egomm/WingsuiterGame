@@ -27,28 +27,32 @@ public class CoinManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        // Get the current time (in seconds)
-        float currentTime = Time.time;
-        // Check if the time since the last update is sufficient
-        if ((currentTime - lastUpdateTime) > TIME_BETWEEN_UPDATE)
+        if (DataManager.gameRunning)
         {
-            // Update the last update time
-            lastUpdateTime = Time.time;
+            // Get the current time (in seconds)
+            float currentTime = Time.time;
+            // Check if the time since the last update is sufficient
+            if ((currentTime - lastUpdateTime) > TIME_BETWEEN_UPDATE)
+            {
+                // Update the last update time
+                lastUpdateTime = Time.time;
 
-            // Determine how many coins the player should earn
-            int coinsEarned = COINS_PER_SECOND + (DataManager.coinMultiplierLevel - 1);
+                // Determine how many coins the player should earn
+                int coinsEarned = COINS_PER_SECOND + (DataManager.coinMultiplierLevel - 1);
 
-            // Get how much to multiply the coins earned by (depending on the distance)
-            float coinDistanceMultiplier = 1;
-            if (PlayerController.groundDistance <= 500) {
-                coinDistanceMultiplier += (500 - PlayerController.groundDistance) / 500;
+                // Get how much to multiply the coins earned by (depending on the distance)
+                float coinDistanceMultiplier = 1;
+                if (PlayerController.groundDistance <= 500)
+                {
+                    coinDistanceMultiplier += (500 - PlayerController.groundDistance) / 500;
+                }
+
+                // Scale the coins earned based on the distance from the ground
+                coinsEarned = (int)(coinsEarned * coinDistanceMultiplier);
+
+                // Update the coin text appropriately (based on the level of the coin multiplier)
+                textManager.UpdateCoinText(coinsEarned);
             }
-
-            // Scale the coins earned based on the distance from the ground
-            coinsEarned = (int) (coinsEarned * coinDistanceMultiplier);
-
-            // Update the coin text appropriately (based on the level of the coin multiplier)
-            textManager.UpdateCoinText(coinsEarned);
         }
     }
 }

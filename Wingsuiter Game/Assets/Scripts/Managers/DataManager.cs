@@ -17,6 +17,9 @@ public struct GameData
 
 public class DataManager 
 {
+    // Base rotation
+    public static Vector3S BASE_ROTATION = new Vector3S(-45, 90, 90);
+
     /* Constant values (Note: a const object is always static) */
     // Perks of each upgrade at the base level (1)
     public const int BASE_COINS_PER_SECOND = 10;
@@ -37,6 +40,8 @@ public class DataManager
     public static int movabilityLevel = 1;
     public static int flareCooldownLevel = 1;
     public static List<World> worldList = new List<World>();
+    public static World currentWorld = null;
+    public static bool gameRunning = false;
 
     private static string dataDirectoryPath = "GameSaves";
     private static string dataFileName = "GameData";
