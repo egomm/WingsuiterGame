@@ -62,7 +62,6 @@ public class DataManager
 
         // Get the file path (.bin format)
         // Note: this overrides the existing binary file
-        // TODO: this may not be adequate in the future
         FileStream binaryFile = File.Create(dataDirectoryPath + "/" + dataFileName + ".bin");
 
         // Create a new game data object

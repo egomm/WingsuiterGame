@@ -27,7 +27,9 @@ public class PlayerController : MonoBehaviour
     public static float groundDistance = float.MaxValue;
 
     // Make a guess for the world spawn coordinates 
-    private Vector3 guessCoordinates = new Vector3(0, 1000, 0);
+    private Vector3 guessCoordinates = new Vector3(0, 1250, 0);
+
+    private int i = 0;
 
 
     /// <summary>
@@ -246,60 +248,64 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            bool hasChunk = false;
-            MeshCollider[] meshColliders = FindObjectsOfType<MeshCollider>();
-
-            foreach (MeshCollider meshCollider in meshColliders)
+            i++;
+            if (i % 10 == 0)
             {
-                if (meshCollider.name == "Terrain Chunk")
+                bool hasChunk = false;
+                MeshCollider[] meshColliders = FindObjectsOfType<MeshCollider>();
+
+                foreach (MeshCollider meshCollider in meshColliders)
                 {
-                    hasChunk = true;
-                    break;
-                }
-            }
-
-            if (hasChunk)
-            {
-                Debug.Log("Found chunk");
-
-                float groundDistance = ClosestDistanceToGround(guessCoordinates);
-                Debug.Log(guessCoordinates.y);
-                Debug.Log(groundDistance);
-
-                // Find adequate world spawn coordinates (must be at least 500m from the ground)
-                if (groundDistance < 500)
-                {
-                    // Increase the guess Y coordinate by 100
-                    guessCoordinates.y += 100;
-                }
-                else
-                {
-                    // Set the world spawn coordinates to the adequate coordinates
-                    Vector3 worldSpawnCoordinates = guessCoordinates;
-
-                    // Set the player's position to the world spawn
-                    transform.position = worldSpawnCoordinates;
-
-                    // Start game
-                    lastFlareTime = Time.time;
-                    DataManager.gameRunning = true;
-                    loadingBackground.SetActive(false);
-
-                    // Update the world information
-                    foreach (World world in DataManager.worldList)
+                    if (meshCollider.name == "Terrain Chunk")
                     {
-                        // Check if the current iteration matches the current world
-                        if (DataManager.currentWorld.worldName == world.worldName)
-                        {
-                            Vector3S seralisedWorldSpawn = new Vector3S(worldSpawnCoordinates.x, worldSpawnCoordinates.y, worldSpawnCoordinates.z);
-                            // Update the world's spawn coordinates
-                            DataManager.currentWorld.spawnCoordinates = seralisedWorldSpawn;
-                            DataManager.currentWorld.lastCoordinates = seralisedWorldSpawn;
-                            world.spawnCoordinates = seralisedWorldSpawn;
-                            world.lastCoordinates = seralisedWorldSpawn;
+                        hasChunk = true;
+                        break;
+                    }
+                }
 
-                            // Break from the loop
-                            break;
+                if (hasChunk)
+                {
+                    Debug.Log("Found chunk");
+
+                    float groundDistance = ClosestDistanceToGround(guessCoordinates);
+                    Debug.Log(guessCoordinates.y);
+                    Debug.Log(groundDistance);
+
+                    // Find adequate world spawn coordinates (must be at least 500m from the ground)
+                    if (groundDistance < 500)
+                    {
+                        // Increase the guess Y coordinate by 250
+                        guessCoordinates.y += 250;
+                    }
+                    else
+                    {
+                        // Set the world spawn coordinates to the adequate coordinates
+                        Vector3 worldSpawnCoordinates = guessCoordinates;
+
+                        // Set the player's position to the world spawn
+                        transform.position = worldSpawnCoordinates;
+
+                        // Start game
+                        lastFlareTime = Time.time;
+                        DataManager.gameRunning = true;
+                        loadingBackground.SetActive(false);
+
+                        // Update the world information
+                        foreach (World world in DataManager.worldList)
+                        {
+                            // Check if the current iteration matches the current world
+                            if (DataManager.currentWorld.worldName == world.worldName)
+                            {
+                                Vector3S seralisedWorldSpawn = new Vector3S(worldSpawnCoordinates.x, worldSpawnCoordinates.y, worldSpawnCoordinates.z);
+                                // Update the world's spawn coordinates
+                                DataManager.currentWorld.spawnCoordinates = seralisedWorldSpawn;
+                                DataManager.currentWorld.lastCoordinates = seralisedWorldSpawn;
+                                world.spawnCoordinates = seralisedWorldSpawn;
+                                world.lastCoordinates = seralisedWorldSpawn;
+
+                                // Break from the loop
+                                break;
+                            }
                         }
                     }
                 }
@@ -309,6 +315,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        deathManager.OpenDeathPanel();
+        if (DataManager.gameRunning)
+        {
+            deathManager.OpenDeathPanel();
+        }
     }
 }

@@ -18,7 +18,6 @@ MonoBehaviour:
     octaves: 6
     persistance: 0.3
     lacunarity: 2
-    seed: 0
     offset: {x: 0, y: 0}
   heightMultiplier: 2000
   heightCurve:

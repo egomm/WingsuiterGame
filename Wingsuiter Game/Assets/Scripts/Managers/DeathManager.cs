@@ -53,7 +53,7 @@ public class DeathManager : MonoBehaviour
     public void Respawn()
     {
         // Set the player position to the world centre
-        player.transform.position = new Vector3(0, 1500, 0);
+        player.transform.position = new Vector3(0, DataManager.currentWorld.spawnCoordinates.y, 0);
         // Reset the player's rotation
         player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, 90, 90);
         // Reset the flare countdown

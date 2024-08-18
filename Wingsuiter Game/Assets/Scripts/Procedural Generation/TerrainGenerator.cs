@@ -32,32 +32,50 @@ public class TerrainGenerator : MonoBehaviour
 	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
 	List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
-	void Start() 
+    /*void Start() 
 	{
-		textureSettings.ApplyToMaterial(mapMaterial);
-		textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
-
-		meshWorldSize = meshSettings.meshWorldSize;
-		chunksVisibleInViewDst = 10;
-
-		UpdateVisibleChunks();
-	}
-
-	void Update() 
-	{
-        playerPosition = new Vector2 (player.position.x, player.position.z);
-
-		if (playerPosition != playerPositionOld) 
+		if (Time.time > 2.5f)
 		{
-			foreach (TerrainChunk chunk in visibleTerrainChunks) 
+			textureSettings.ApplyToMaterial(mapMaterial);
+			textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
+
+			meshWorldSize = meshSettings.meshWorldSize;
+			chunksVisibleInViewDst = 10;
+
+			UpdateVisibleChunks();
+		}
+		else
+		{
+			Start();
+		}
+	}*/
+
+    void Start()
+    {
+        textureSettings.ApplyToMaterial(mapMaterial);
+        textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
+
+        meshWorldSize = meshSettings.meshWorldSize;
+        chunksVisibleInViewDst = 10;
+
+        UpdateVisibleChunks();
+    }
+
+    void Update()
+	{
+		playerPosition = new Vector2(player.position.x, player.position.z);
+
+		if (playerPosition != playerPositionOld)
+		{
+			foreach (TerrainChunk chunk in visibleTerrainChunks)
 			{
-				chunk.UpdateCollisionMesh ();
+				chunk.UpdateCollisionMesh();
 			}
 		}
 
-		if ((playerPositionOld - playerPosition).sqrMagnitude > sqrPlayerMoveThresholdForChunkUpdate) 
+		if ((playerPositionOld - playerPosition).sqrMagnitude > sqrPlayerMoveThresholdForChunkUpdate)
 		{
-            playerPositionOld = playerPosition;
+			playerPositionOld = playerPosition;
 			UpdateVisibleChunks();
 		}
 	}
