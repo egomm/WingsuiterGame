@@ -101,8 +101,8 @@ public class WorldListManager : MonoBehaviour
 
             var paddingObj = Instantiate(padding);
             //newObj.transform.parent = GameObject.Find("Panel").transform;
-            worldObj.transform.SetParent(panel.transform);
-            paddingObj.transform.SetParent(panel.transform);
+            worldObj.transform.SetParent(panel.transform, false);
+            paddingObj.transform.SetParent(panel.transform, false);
 
             // Add this world information to the dictionary
             worldButtonInformation.Add(worldObj.name, worldObj);

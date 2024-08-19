@@ -271,8 +271,8 @@ public class PlayerController : MonoBehaviour
                     Debug.Log(guessCoordinates.y);
                     Debug.Log(groundDistance);
 
-                    // Find adequate world spawn coordinates (must be at least 500m from the ground)
-                    if (groundDistance < 500)
+                    // Find adequate world spawn coordinates (must be at least 600m from the ground)
+                    if (groundDistance < 600)
                     {
                         // Increase the guess Y coordinate by 250
                         guessCoordinates.y += 250;
