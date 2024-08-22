@@ -5,14 +5,13 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
-    private Vector3 offset;
+    private Vector3 offset = new Vector3(-8, 2, 0);
     public Utility utility;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Calculate the offset between the player and the camera
-        offset = transform.position - player.transform.position;
+        // Set the base euler angles of the camera
         transform.eulerAngles = new Vector3(25, 90, 0);
     }
 

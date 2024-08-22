@@ -152,7 +152,6 @@ public class WorldManager : MonoBehaviour
             {
                 // Alert the user of the exception
                 Debug.Log(ex.Message);
-                // TODO: add a popup that alerts the user of the exception
             }
         }
     }
