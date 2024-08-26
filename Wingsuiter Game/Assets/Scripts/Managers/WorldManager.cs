@@ -12,9 +12,15 @@ public class Vector3S
     public float y;
     public float z;
 
-    // Null object
+    // A Vector3S at (0, 0, 0)
     public static readonly Vector3S zeroVector = new Vector3S(0, 0, 0);
 
+    /// <summary>
+    /// Constructor that initalises a new instance of the Vector3S class.
+    /// </summary>
+    /// <param name="x">The x coordinate</param>
+    /// <param name="y">The y coordinate</param>
+    /// <param name="z">The z coordinate</param>
     public Vector3S(float x, float y, float z)
     {
         this.x = x;

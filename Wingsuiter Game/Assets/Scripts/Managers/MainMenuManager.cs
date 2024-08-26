@@ -17,6 +17,12 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene(sceneName: "Upgrade Menu");
     }
 
+    public void ShowInformation()
+    {
+        // Load the information scene
+        SceneManager.LoadScene(sceneName: "Information");
+    }
+
     public void QuitGame()
     {
         // Quit the game
