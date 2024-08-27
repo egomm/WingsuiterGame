@@ -65,7 +65,7 @@ public class GUITextManager : MonoBehaviour
         int zPosition = (int)playerCoordinates.z;
 
         // Update the coordinates text with the player's current coordinates
-        coordinateText.text = $"({xPosition}, {yPosition}, {zPosition})";
+        coordinateText.text = $"Coords: ({xPosition}, {yPosition}, {zPosition})";
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public class GUITextManager : MonoBehaviour
         int zRotation = ClampRotation((int)playerRotation.z);
 
         // Set the rotation text
-        rotationText.text = $"({xRotation}, {yRotation}, {zRotation})";
+        rotationText.text = $"Rotation: ({xRotation}, {yRotation}, {zRotation})";
     }
 
 

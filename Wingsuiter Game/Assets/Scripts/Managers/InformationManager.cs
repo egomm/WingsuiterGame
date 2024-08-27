@@ -7,7 +7,6 @@ public class InformationManager : MonoBehaviour
 {
     public void ExitInformationMenu()
     {
-        Debug.Log("???");
         SceneManager.LoadScene(sceneName: "Main Menu");
     }
 }

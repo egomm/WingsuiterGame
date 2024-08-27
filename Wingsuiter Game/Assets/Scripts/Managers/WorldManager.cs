@@ -106,7 +106,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Create a new world with the given world name and world seed
     /// </summary>
     public void CreateWorld()
     {
@@ -127,6 +127,35 @@ public class WorldManager : MonoBehaviour
 
         // Exit the world creator after the user has created a new world
         ExitWorldCreator();
+    }
+
+    /// <summary>
+    /// Edit the name of the world
+    /// </summary>
+    public void EditWorld()
+    {
+        List<World> updatedWorldList = new List<World>();
+        // Iterate over 
+        foreach (World world in DataManager.worldList)
+        {
+            // Check if the world has been found
+            if (world.worldName == DataManager.currentWorld.worldName)
+            {
+                // Create an updated world
+                World updatedWorld = new World(worldNameInput, world.seed, world.spawnCoordinates, world.lastCoordinates, world.lastRotation);
+                updatedWorldList.Add(updatedWorld);
+            }
+            else
+            {
+                updatedWorldList.Add(world);
+            }
+        }
+
+        // Update the world list
+        DataManager.worldList = updatedWorldList;
+
+        // Return back to the world selector scene
+        SceneManager.LoadScene(sceneName: "World Selector");
     }
 
     /// <summary>

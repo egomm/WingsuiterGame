@@ -13,6 +13,8 @@ public class WorldListManager : MonoBehaviour
     public GameObject panel;
     public GameObject loadingBackground;
 
+    public List<GameObject> worldButtons = new List<GameObject>();
+
     // Create a dictionary to store information about the world buttons
     private static Dictionary<string, Button> worldButtonInformation = new Dictionary<string, Button>();
     // Manage the currently selected world
@@ -22,7 +24,7 @@ public class WorldListManager : MonoBehaviour
     private static Color selectedWorldColour = new Color((float)200 / 255, (float)200 / 255, (float)200 / 255);
 
     /// <summary>
-    /// 
+    /// Open the selected world
     /// </summary>
     public void OpenWorld()
     {
@@ -48,15 +50,36 @@ public class WorldListManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Edit the selected world
     /// </summary>
-    /// <param name="worldName"></param>
+    public void EditWorld()
+    {
+        // Find the world with this name
+        foreach (World world in DataManager.worldList)
+        {
+            // Check if the world has been found
+            if (world.worldName == selectedWorldName)
+            {
+                // Update the world appropriately
+                DataManager.currentWorld = world;
+                // Switch to the edit scene 
+                SceneManager.LoadScene(sceneName: "World Editor");
+
+                // Exit the loop
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Handle the selection of a world (ie. change the world colour)
+    /// </summary>
+    /// <param name="worldName">The name of the world selected</param>
     public static void HandleSelectedWorld(string worldName)
     {
         // Ensure that this world name is valid
         if (worldButtonInformation.ContainsKey(worldName))
         {
-            Debug.Log("HI");
             // Unselect the currently selected world
             if (selectedWorldName != null)
             {
@@ -73,36 +96,31 @@ public class WorldListManager : MonoBehaviour
         }
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Update the world list with the worlds from the data manager
+    /// </summary>
+    public void UpdateWorldList()
     {
-        // Set the loading background to be invisible by default
-        //loadingBackground.SetActive(false);
-
-        // Iterate over the each world in the world list from the data manager
-        //foreach (World world in DataManager.worldList)
-        //{
-        Debug.Log("Hello");
-        //Instantiate(worldItem, new Vector3(0, 0, 0), Quaternion.identity);
-        //for (int i = 0; i < 10; i++)
-        Debug.Log(DataManager.worldList.Count);
-
         // Clear the current world information
         worldButtonInformation.Clear();
         selectedWorldName = null;
+        foreach (GameObject button in worldButtons)
+        {
+            Destroy(button);
+        }
 
         foreach (World world in DataManager.worldList)
         {
             Button worldObj = Instantiate(worldItem);
+            worldButtons.Add(worldObj.gameObject);
 
             // Set the name of the world object
             worldObj.name = world.worldName;
 
-            var paddingObj = Instantiate(padding);
+            //var paddingObj = Instantiate(padding);
             //newObj.transform.parent = GameObject.Find("Panel").transform;
             worldObj.transform.SetParent(panel.transform, false);
-            paddingObj.transform.SetParent(panel.transform, false);
+            //paddingObj.transform.SetParent(panel.transform, false);
 
             // Add this world information to the dictionary
             worldButtonInformation.Add(worldObj.name, worldObj);
@@ -128,8 +146,38 @@ public class WorldListManager : MonoBehaviour
             Button selectedButton = worldButtonInformation[firstWorld];
             selectedButton.image.color = selectedWorldColour;
             selectedWorldName = firstWorld;
-            Debug.Log(firstWorld);
         }
-        //}
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        UpdateWorldList();
+    }
+
+    /// <summary>
+    /// Delete the world
+    /// </summary>
+    public void DeleteWorld()
+    {
+        List<World> updatedWorldList = new List<World>();
+        // Iterate over 
+        foreach (World world in DataManager.worldList)
+        {
+            // Check if the world has been found
+            if (world.worldName == selectedWorldName)
+            {
+                // Skip it
+                continue;
+            }
+            else
+            {
+                updatedWorldList.Add(world);
+            }
+        }
+
+        // Update the world list
+        DataManager.worldList = updatedWorldList;
+        UpdateWorldList();
     }
 }
