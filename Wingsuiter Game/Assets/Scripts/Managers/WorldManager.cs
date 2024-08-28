@@ -49,30 +49,33 @@ public class World
     public Vector3S spawnCoordinates;
     public Vector3S lastCoordinates;
     public Vector3S lastRotation;
+    public float flareCooldown;
     public DateTime time;
     
     // Create a constructor for the world information
-    public World(string worldName, int seed, Vector3S spawnCoordinates, Vector3S lastCoordinates, Vector3S lastRotation)
+    public World(string worldName, int seed, Vector3S spawnCoordinates, Vector3S lastCoordinates, Vector3S lastRotation, float flareCooldown)
     {
         this.worldName = worldName;
         this.seed = seed;
         this.spawnCoordinates = spawnCoordinates;
         this.lastCoordinates = lastCoordinates;
         this.lastRotation = lastRotation;
+        this.flareCooldown = flareCooldown;
         time = DateTime.Now;
     }
 }
 
-// TODO: Add an option to delete a world
-
 public class WorldManager : MonoBehaviour
 {
-    private string worldNameInput;
+    public GameObject errorPanel;
+    public TMP_Text errorText;
+
+    private string worldNameInput = "";
     private int seedInput;
     private bool seedFieldComplete = false;
 
     /// <summary>
-    /// 
+    /// Load the World Creator scene
     /// </summary>
     public void OpenCreateWorldMenu()
     {
@@ -80,7 +83,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Load the World Selector scene
     /// </summary>
     public void ExitWorldCreator()
     {
@@ -88,7 +91,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Load the Main Menu scene
     /// </summary>
     public void ExitWorldSelector()
     {
@@ -106,6 +109,14 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Closes the error panel
+    /// </summary>
+    public void CloseErrorPanel()
+    {
+        errorPanel.SetActive(false);
+    }
+
+    /// <summary>
     /// Create a new world with the given world name and world seed
     /// </summary>
     public void CreateWorld()
@@ -117,16 +128,71 @@ public class WorldManager : MonoBehaviour
             seedInput = UnityEngine.Random.Range(0, int.MaxValue);
         }
 
-        // Initalise a new world object with the world name and the seed
-        World newWorld = new World(worldNameInput, seedInput, Vector3S.zeroVector, Vector3S.zeroVector, Vector3S.zeroVector);
-        // Add the new world to the list of worlds
-        DataManager.worldList.Add(newWorld);
+        // Trim the world name input
+        worldNameInput = worldNameInput.Trim();
 
-        // Sort the world list by the list opened time
-        SortWorldList();
+        // Check if the world name is more than 50 characters
+        if (worldNameInput.Length > 50)
+        {
+            // Alert the player of the error
+            errorText.text = "The world name must not exceed 50 characters in length.";
+            // Show the panel
+            errorPanel.SetActive(true);
+        }
+        else if (worldNameInput.Length == 0)
+        {
+            // Alert the player of the error
+            errorText.text = "The world name is required.";
+            // Show the panel
+            errorPanel.SetActive(true);
+        }
+        else
+        {
+            bool worldNameInUse = false;
 
-        // Exit the world creator after the user has created a new world
-        ExitWorldCreator();
+            // Iterate over the worlds to check if the world name is in use
+            foreach (World world in DataManager.worldList)
+            {
+                if (world.worldName == worldNameInput)
+                {
+                    worldNameInUse = true;
+                    break;
+                }
+            }
+
+            if (worldNameInUse)
+            {
+                // Alert the player of the error
+                errorText.text = $"The world name {worldNameInput} is already in use.";
+                // Show the panel
+                errorPanel.SetActive(true);
+            }
+            else
+            {
+                // Check if the seed field is too large
+                if (seedFieldComplete)
+                {
+                    if (seedInput > int.MaxValue || seedInput < 0)
+                    {
+                        // Alert the player of the error
+                        errorText.text = $"The seed must be between {0} and {int.MaxValue}";
+                        // Show the panel
+                        errorPanel.SetActive(true);
+                    }
+                }
+                
+                // Initalise a new world object with the world name and the seed
+                World newWorld = new World(worldNameInput, seedInput, Vector3S.zeroVector, Vector3S.zeroVector, Vector3S.zeroVector, -1);
+                // Add the new world to the list of worlds
+                DataManager.worldList.Add(newWorld);
+
+                // Sort the world list by the list opened time
+                SortWorldList();
+
+                // Exit the world creator after the user has created a new world
+                ExitWorldCreator();
+            }
+        }
     }
 
     /// <summary>
@@ -134,6 +200,9 @@ public class WorldManager : MonoBehaviour
     /// </summary>
     public void EditWorld()
     {
+        // Flag to control whether the world was edited
+        bool worldEdited = false;
+
         List<World> updatedWorldList = new List<World>();
         // Iterate over 
         foreach (World world in DataManager.worldList)
@@ -141,9 +210,53 @@ public class WorldManager : MonoBehaviour
             // Check if the world has been found
             if (world.worldName == DataManager.currentWorld.worldName)
             {
-                // Create an updated world
-                World updatedWorld = new World(worldNameInput, world.seed, world.spawnCoordinates, world.lastCoordinates, world.lastRotation);
-                updatedWorldList.Add(updatedWorld);
+                // Trim the world name input
+                worldNameInput = worldNameInput.Trim();
+
+                // Check if the world name is more than 50 characters
+                if (worldNameInput.Length > 50)
+                {
+                    // Alert the player of the error
+                    errorText.text = "The world name must not exceed 50 characters in length.";
+                    // Show the panel
+                    errorPanel.SetActive(true);
+                }
+                else if (worldNameInput.Length == 0)
+                {
+                    // Alert the player of the error
+                    errorText.text = "The world name is required";
+                    // Show the panel
+                    errorPanel.SetActive(true);
+                }
+                else 
+                {
+                    bool worldNameInUse = false;
+
+                    // Iterate over the worlds to check if the world name is in use
+                    foreach (World worldChecking in DataManager.worldList)
+                    {
+                        if (worldChecking.worldName == worldNameInput)
+                        {
+                            worldNameInUse = true;
+                            break;
+                        }
+                    }
+
+                    if (worldNameInUse)
+                    {
+                        // Alert the player of the error
+                        errorText.text = $"The world name {worldNameInput} is already in use.";
+                        // Show the panel
+                        errorPanel.SetActive(true);
+                    }
+                    else
+                    {
+                        // Create an updated world
+                        World updatedWorld = new World(worldNameInput, world.seed, world.spawnCoordinates, world.lastCoordinates, world.lastRotation, world.flareCooldown);
+                        updatedWorldList.Add(updatedWorld);
+                        worldEdited = true;
+                    }
+                }
             }
             else
             {
@@ -151,11 +264,14 @@ public class WorldManager : MonoBehaviour
             }
         }
 
-        // Update the world list
-        DataManager.worldList = updatedWorldList;
+        if (worldEdited)
+        {
+            // Update the world list
+            DataManager.worldList = updatedWorldList;
 
-        // Return back to the world selector scene
-        SceneManager.LoadScene(sceneName: "World Selector");
+            // Return back to the world selector scene
+            SceneManager.LoadScene(sceneName: "World Selector");
+        }
     }
 
     /// <summary>
@@ -186,7 +302,7 @@ public class WorldManager : MonoBehaviour
             catch (Exception ex)
             {
                 // Alert the user of the exception
-                Debug.Log(ex.Message);
+                Debug.LogError(ex.Message);
             }
         }
     }

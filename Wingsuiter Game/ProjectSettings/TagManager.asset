@@ -6,6 +6,7 @@ TagManager:
   tags:
   - World Title
   - Last Opened
+  - Seed
   layers:
   - Default
   - TransparentFX

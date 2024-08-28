@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class WorldListManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class WorldListManager : MonoBehaviour
     public GameObject padding;
     public GameObject panel;
     public GameObject loadingBackground;
+    public GameObject deleteWorldPanel;
+    public TMP_Text deleteWorldText;
 
     public List<GameObject> worldButtons = new List<GameObject>();
 
@@ -28,8 +31,6 @@ public class WorldListManager : MonoBehaviour
     /// </summary>
     public void OpenWorld()
     {
-        Debug.Log($"Selected world to open: {selectedWorldName}");
-
         // Find the world with this name
         foreach (World world in DataManager.worldList)
         {
@@ -40,6 +41,8 @@ public class WorldListManager : MonoBehaviour
                 DataManager.currentWorld = world;
                 // Set the loading background to be visible
                 loadingBackground.SetActive(true);
+                // Update the last opened time
+                world.time = DateTime.Now;
                 // Switch to the game scene
                 SceneManager.LoadScene(sceneName: "Game");
 
@@ -136,6 +139,10 @@ public class WorldListManager : MonoBehaviour
                 {
                     info.text = $"Last Opened: {world.time}";
                 }
+                else if (info.CompareTag("Seed"))
+                {
+                    info.text = $"Seed: {world.seed}";
+                }
             }
         }
 
@@ -153,6 +160,25 @@ public class WorldListManager : MonoBehaviour
     void Start()
     {
         UpdateWorldList();
+    }
+
+    /// <summary>
+    /// Show the delete world panel
+    /// </summary>
+    public void ShowDeleteWorldPanel()
+    {
+        // Update the delete world text
+        deleteWorldText.text = $"Are you sure you want to delete {selectedWorldName}?";
+        // Set the panel to active
+        deleteWorldPanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// Hide the delete world panel
+    /// </summary>
+    public void HideDeleteWorldPanel()
+    {
+        deleteWorldPanel.SetActive(false);
     }
 
     /// <summary>
@@ -179,5 +205,8 @@ public class WorldListManager : MonoBehaviour
         // Update the world list
         DataManager.worldList = updatedWorldList;
         UpdateWorldList();
+
+        // Hide the panel
+        HideDeleteWorldPanel();
     }
 }

@@ -6,7 +6,6 @@ public class ExitGameManager : MonoBehaviour
 {
     void OnApplicationQuit()
     {
-        Debug.Log("Exited");
         // Save the data
         DataManager.SaveData();
     }

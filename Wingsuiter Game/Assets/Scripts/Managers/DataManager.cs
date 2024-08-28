@@ -87,8 +87,6 @@ public class DataManager
     {
         try
         {
-            Debug.Log("Loading world data");
-
             // Initalise the binary formatter
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 

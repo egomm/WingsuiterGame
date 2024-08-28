@@ -110,6 +110,12 @@ public class PlayerController : MonoBehaviour
                 world.lastCoordinates = seralisedLastPosition;
                 world.lastRotation = seralisedLastRotation;
 
+                // Update the flare cooldown
+                float currentTime = Time.time;
+                float timeUntilNextFlare = FLARE_DELAY - (currentTime - lastFlareTime);
+                DataManager.currentWorld.flareCooldown = timeUntilNextFlare;
+                world.flareCooldown = timeUntilNextFlare;
+
                 // Break from the loop
                 break;
             }
@@ -119,12 +125,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Started");
-
         Vector3 lastSavedCoordinates = DataManager.currentWorld.lastCoordinates.ToVector3();
         Vector3 worldSpawnCoordinates = DataManager.currentWorld.spawnCoordinates.ToVector3();
         Vector3 rotationVector = DataManager.currentWorld.lastRotation.ToVector3();
         Quaternion lastRotation = DataManager.currentWorld.lastRotation.ToQuaternion();
+        float flareCooldown = DataManager.currentWorld.flareCooldown;
 
         if (worldSpawnCoordinates == Vector3.zero)
         {
@@ -152,10 +157,18 @@ public class PlayerController : MonoBehaviour
             {
                 transform.rotation = DataManager.BASE_ROTATION.ToQuaternion();
             }
+
+            float timeSinceLastFlare = 0;
+            if (flareCooldown > 0)
+            {
+                timeSinceLastFlare = FLARE_DELAY - flareCooldown;
+            }
+
             // Get the current time
             float currentTime = Time.time;
+
             // Update the last flare time (with floor to prevent minor loading issues)
-            lastFlareTime = Mathf.Floor(currentTime);
+            lastFlareTime = Mathf.Floor(currentTime - timeSinceLastFlare);
         }
     }
 
@@ -265,11 +278,7 @@ public class PlayerController : MonoBehaviour
 
                 if (hasChunk)
                 {
-                    Debug.Log("Found chunk");
-
                     float groundDistance = ClosestDistanceToGround(guessCoordinates);
-                    Debug.Log(guessCoordinates.y);
-                    Debug.Log(groundDistance);
 
                     // Find adequate world spawn coordinates (must be at least 600m from the ground)
                     if (groundDistance < 600)
