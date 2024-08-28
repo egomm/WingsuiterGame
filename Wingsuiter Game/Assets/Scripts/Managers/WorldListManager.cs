@@ -112,6 +112,9 @@ public class WorldListManager : MonoBehaviour
             Destroy(button);
         }
 
+        // Sort the world list
+        WorldManager.SortWorldList();
+
         foreach (World world in DataManager.worldList)
         {
             Button worldObj = Instantiate(worldItem);

@@ -175,7 +175,7 @@ public class WorldManager : MonoBehaviour
                     if (seedInput > int.MaxValue || seedInput < 0)
                     {
                         // Alert the player of the error
-                        errorText.text = $"The seed must be between {0} and {int.MaxValue}";
+                        errorText.text = $"The seed must be between {0} and {int.MaxValue}.";
                         // Show the panel
                         errorPanel.SetActive(true);
                     }
@@ -224,7 +224,7 @@ public class WorldManager : MonoBehaviour
                 else if (worldNameInput.Length == 0)
                 {
                     // Alert the player of the error
-                    errorText.text = "The world name is required";
+                    errorText.text = "The world name is required.";
                     // Show the panel
                     errorPanel.SetActive(true);
                 }

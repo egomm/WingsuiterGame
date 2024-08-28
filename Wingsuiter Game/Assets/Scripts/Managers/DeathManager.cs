@@ -36,6 +36,8 @@ public class DeathManager : MonoBehaviour
                 world.lastCoordinates = world.spawnCoordinates;
                 // Update the last rotation
                 world.lastRotation = DataManager.BASE_ROTATION;
+                // Update the flare cooldown to -1 (ie. undefined)
+                world.flareCooldown = -1;
 
                 // Break from the loop
                 break;

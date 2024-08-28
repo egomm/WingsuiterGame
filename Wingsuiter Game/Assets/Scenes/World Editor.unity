@@ -1350,7 +1350,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 508695231}
         m_TargetAssemblyTypeName: WorldManager, Assembly-CSharp
-        m_MethodName: CreateWorld
+        m_MethodName: EditWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
