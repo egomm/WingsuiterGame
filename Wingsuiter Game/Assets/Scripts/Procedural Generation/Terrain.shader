@@ -2,6 +2,7 @@
 /// NOTE: This code has been adapted from a tutorial and thus the majority of this code is not my own
 /// A link to the tutorial can be found here: https://www.youtube.com/playlist?list=PLFt_AvWsXl0eBW2EiBtl_sxmDtSgZBxB3
 /// All of the code comments are written by me based on my own understanding of this code.
+/// For this file, I do not understand much other than that this controls the terrain shader and information about it (eg. the albedo)
 /// </summary>
 Shader "Custom/Terrain" {
 	Properties {

@@ -23,9 +23,8 @@ public class CameraController : MonoBehaviour
 
         float offsetY = 0;
 
+        // Update the position and rotate of the camera based on the player's position and the offsets
         transform.position = player.transform.position + new Vector3(offsetX, offset.y + offsetY, offsetZ);
-
-        
         transform.eulerAngles = new Vector3(25, player.transform.rotation.eulerAngles.y, 0);
     }
 }

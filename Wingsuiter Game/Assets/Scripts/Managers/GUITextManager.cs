@@ -42,7 +42,7 @@ public class GUITextManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Update the speed text based on the player's velocity
+    /// Update the speed text based on the player's velocity.
     /// </summary>
     /// <param name="velocity">The player's velocity</param>
     public void UpdateSpeedText(double velocity)
@@ -54,7 +54,7 @@ public class GUITextManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Update the coordinate text based on the player's coordinates
+    /// Update the coordinate text based on the player's coordinates.
     /// </summary>
     /// <param name="playerCoordinates">The player's current position (coordinates)</param>
     public void UpdateCoordinateText(Vector3 playerCoordinates)
@@ -83,7 +83,7 @@ public class GUITextManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the rotation text based on the player rotation
+    /// Updates the rotation text based on the player rotation.
     /// </summary>
     /// <param name="playerRotation">The player's current rotation</param>
     public void UpdateRotationText(Vector3 playerRotation)
@@ -137,7 +137,7 @@ public class GUITextManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Resets the size of the coin text
+    /// Resets the size of the coin text.
     /// </summary>
     void ResetCoinTextSize()
     {
@@ -145,7 +145,7 @@ public class GUITextManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Load the coin text from the data manager
+    /// Load the coin text from the data manager.
     /// </summary>
     public void LoadCoinText()
     {
@@ -153,7 +153,7 @@ public class GUITextManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Update the coin text by a change in coins
+    /// Update the coin text by a change in coins.
     /// </summary>
     /// <param name="changeInCoins">The change in coins (the amount the player earned)</param>
     public void UpdateCoinText(int changeInCoins)

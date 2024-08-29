@@ -8,6 +8,7 @@
 [CreateAssetMenu()]
 public class MeshSettings : UpdatableData
 {
+	// Note LOD: level of detail
 	public const int numSupportedLODs = 5;
 	public const int numSupportedChunkSizes = 9;
 	public const int numSupportedFlatshadedChunkSizes = 3;
@@ -21,7 +22,7 @@ public class MeshSettings : UpdatableData
 	public int flatshadedChunkSizeIndex;
 
 
-	// num verts per line of mesh rendered at LOD = 0. Includes the 2 extra verts that are excluded from final mesh, but used for calculating normals
+	// Property for calculating the number of vertices per line given the current chunk size
 	public int numVertsPerLine 
 	{
 		get 
@@ -30,6 +31,7 @@ public class MeshSettings : UpdatableData
 		}
 	}
 
+	// Property to calculate the world size based on the number of vertices per line and the mesh scale
 	public float meshWorldSize 
 	{
 		get 

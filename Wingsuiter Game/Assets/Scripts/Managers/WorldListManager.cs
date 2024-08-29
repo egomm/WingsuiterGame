@@ -8,7 +8,6 @@ using System;
 
 public class WorldListManager : MonoBehaviour
 {
-    //
     public Button worldItem;
     public GameObject padding;
     public GameObject panel;
@@ -27,7 +26,7 @@ public class WorldListManager : MonoBehaviour
     private static Color selectedWorldColour = new Color((float)200 / 255, (float)200 / 255, (float)200 / 255);
 
     /// <summary>
-    /// Open the selected world
+    /// Open the selected world.
     /// </summary>
     public void OpenWorld()
     {
@@ -53,7 +52,7 @@ public class WorldListManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Edit the selected world
+    /// Edit the selected world.
     /// </summary>
     public void EditWorld()
     {
@@ -75,7 +74,7 @@ public class WorldListManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handle the selection of a world (ie. change the world colour)
+    /// Handle the selection of a world (ie. change the world colour).
     /// </summary>
     /// <param name="worldName">The name of the world selected</param>
     public static void HandleSelectedWorld(string worldName)
@@ -100,7 +99,7 @@ public class WorldListManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Update the world list with the worlds from the data manager
+    /// Update the world list with the worlds from the data manager.
     /// </summary>
     public void UpdateWorldList()
     {
@@ -122,11 +121,8 @@ public class WorldListManager : MonoBehaviour
 
             // Set the name of the world object
             worldObj.name = world.worldName;
-
-            //var paddingObj = Instantiate(padding);
-            //newObj.transform.parent = GameObject.Find("Panel").transform;
+            // Set the parent of the world object to the panel
             worldObj.transform.SetParent(panel.transform, false);
-            //paddingObj.transform.SetParent(panel.transform, false);
 
             // Add this world information to the dictionary
             worldButtonInformation.Add(worldObj.name, worldObj);

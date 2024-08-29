@@ -9,7 +9,8 @@ using System.Collections.Generic;
 /// </summary>
 public class TerrainGenerator : MonoBehaviour 
 {
-	const float playerMoveThresholdForChunkUpdate = 25f;
+    // The threshold distance the player needs to move to trigger a chunk update
+    const float playerMoveThresholdForChunkUpdate = 25f;
 	const float sqrPlayerMoveThresholdForChunkUpdate = playerMoveThresholdForChunkUpdate * playerMoveThresholdForChunkUpdate;
 
 
@@ -29,17 +30,20 @@ public class TerrainGenerator : MonoBehaviour
 	float meshWorldSize;
 	int chunksVisibleInViewDst;
 
-	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
+    // Store and manage terrain chunks
+    Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
 	List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
     void Start()
     {
+        // Apply texture settings to the material and update the mesh heights
         textureSettings.ApplyToMaterial(mapMaterial);
         textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
 
         meshWorldSize = meshSettings.meshWorldSize;
         chunksVisibleInViewDst = 10;
 
+        // Update visible chunks based on the player's initial position
         UpdateVisibleChunks();
     }
 
@@ -47,7 +51,8 @@ public class TerrainGenerator : MonoBehaviour
 	{
 		playerPosition = new Vector2(player.position.x, player.position.z);
 
-		if (playerPosition != playerPositionOld)
+        // If the player has moved since the last update, update the collision meshes of visible chunks
+        if (playerPosition != playerPositionOld)
 		{
 			foreach (TerrainChunk chunk in visibleTerrainChunks)
 			{
@@ -55,17 +60,23 @@ public class TerrainGenerator : MonoBehaviour
 			}
 		}
 
-		if ((playerPositionOld - playerPosition).sqrMagnitude > sqrPlayerMoveThresholdForChunkUpdate)
+        // If the player has moved beyond the threshold distance, update the visible chunks
+        if ((playerPositionOld - playerPosition).sqrMagnitude > sqrPlayerMoveThresholdForChunkUpdate)
 		{
 			playerPositionOld = playerPosition;
 			UpdateVisibleChunks();
 		}
 	}
-		
-	void UpdateVisibleChunks() 
+
+    /// <summary>
+    /// Update the visible terrain chunks based on the player's position.
+    /// </summary>
+    void UpdateVisibleChunks() 
 	{
-		HashSet<Vector2> alreadyUpdatedChunkCoords = new HashSet<Vector2> ();
-		for (int i = visibleTerrainChunks.Count-1; i >= 0; i--)
+		HashSet<Vector2> alreadyUpdatedChunkCoords = new HashSet<Vector2> (); // Note: every item is unique in a HashSet
+
+        // Iterate over visible chunks and update them
+        for (int i = visibleTerrainChunks.Count-1; i >= 0; i--)
 		{
 			alreadyUpdatedChunkCoords.Add(visibleTerrainChunks [i].coord);
 			visibleTerrainChunks [i].UpdateTerrainChunk();
@@ -74,7 +85,8 @@ public class TerrainGenerator : MonoBehaviour
 		int currentChunkCoordX = Mathf.RoundToInt(playerPosition.x / meshWorldSize);
 		int currentChunkCoordY = Mathf.RoundToInt(playerPosition.y / meshWorldSize);
 
-		for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++) 
+        // Iterate over the chunks within the view distance to update or load them
+        for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++) 
 		{
 			for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++) 
 			{
@@ -98,7 +110,12 @@ public class TerrainGenerator : MonoBehaviour
 		}
 	}
 
-	void OnTerrainChunkVisibilityChanged(TerrainChunk chunk, bool isVisible) 
+    /// <summary>
+    /// Handle visibility changes for terrain chunks.
+    /// </summary>
+    /// <param name="chunk">The chunk where the visibility changed</param>
+    /// <param name="isVisible">Whether the chunk is now visible or not</param>
+    void OnTerrainChunkVisibilityChanged(TerrainChunk chunk, bool isVisible) 
 	{
 		if (isVisible) 
 		{
@@ -112,6 +129,9 @@ public class TerrainGenerator : MonoBehaviour
 
 }
 
+/// <summary>
+/// This struct stores information about the level of detail (LOD) for the terrain
+/// </summary>
 [System.Serializable]
 public struct LODInfo 
 {
@@ -119,8 +139,8 @@ public struct LODInfo
 	public int lod;
 	public float visibleDstThreshold;
 
-
-	public float sqrVisibleDstThreshold 
+    // Property to return the square of the visibility distance threshold
+    public float sqrVisibleDstThreshold 
 	{
 		get 
 		{

@@ -8,7 +8,7 @@ public class PauseGameManager : MonoBehaviour
     public GameObject pausePanel;
 
     /// <summary>
-    /// 
+    /// Pause the game.
     /// </summary>
     public void PauseGame()
     {
@@ -19,7 +19,7 @@ public class PauseGameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Resume the game.
     /// </summary>
     public void ResumeGame()
     {
@@ -29,7 +29,7 @@ public class PauseGameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Exit the game.
     /// </summary>
     public void ExitGame()
     {

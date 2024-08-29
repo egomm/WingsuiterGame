@@ -9,10 +9,10 @@
 public class HeightMapSettings : UpdatableData 
 {
 	public NoiseSettings noiseSettings;
-
 	public float heightMultiplier;
 	public AnimationCurve heightCurve;
 
+	// Property to calculate the minimum height based on the height multiplier and curve
 	public float minHeight 
 	{
 		get 
@@ -21,7 +21,8 @@ public class HeightMapSettings : UpdatableData
 		}
 	}
 
-	public float maxHeight 
+    // Property to calculate the maximum height based on the height multiplier and curve
+    public float maxHeight 
 	{
 		get 
 		{
@@ -31,6 +32,7 @@ public class HeightMapSettings : UpdatableData
 
 	#if UNITY_EDITOR
 
+	// Validates the noise settings and invokes the base class validation (ie. from UpdatableData)
 	protected override void OnValidate() {
 		noiseSettings.ValidateValues();
 		base.OnValidate();

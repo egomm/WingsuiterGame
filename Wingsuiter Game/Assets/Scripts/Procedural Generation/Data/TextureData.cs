@@ -17,6 +17,10 @@ public class TextureData : UpdatableData
 	float savedMinHeight;
 	float savedMaxHeight;
 
+	/// <summary>
+	/// Applies the texture data to the given material.
+	/// </summary>
+	/// <param name="material">The material to apply the texture data to</param>
 	public void ApplyToMaterial(Material material) 
 	{
 		material.SetInt ("layerCount", layers.Length);
@@ -25,12 +29,20 @@ public class TextureData : UpdatableData
 		material.SetFloatArray ("baseBlends", layers.Select(x => x.blendStrength).ToArray());
 		material.SetFloatArray ("baseColourStrength", layers.Select(x => x.tintStrength).ToArray());
 		material.SetFloatArray ("baseTextureScales", layers.Select(x => x.textureScale).ToArray());
-		Texture2DArray texturesArray = GenerateTextureArray (layers.Select (x => x.texture).ToArray ());
+
+        // Generate a texture array from the textures in the layers and apply it to the material
+        Texture2DArray texturesArray = GenerateTextureArray (layers.Select (x => x.texture).ToArray ());
 		material.SetTexture("baseTextures", texturesArray);
 
 		UpdateMeshHeights(material, savedMinHeight, savedMaxHeight);
 	}
 
+	/// <summary>
+	/// Updates the mesh height properties in the material.
+	/// </summary>
+	/// <param name="material">The material to update</param>
+	/// <param name="minHeight">The minimum height of the mesh</param>
+	/// <param name="maxHeight">The maximum height of the mesh</param>
 	public void UpdateMeshHeights(Material material, float minHeight, float maxHeight) 
 	{
 		savedMinHeight = minHeight;
@@ -40,7 +52,12 @@ public class TextureData : UpdatableData
 		material.SetFloat("maxHeight", maxHeight);
 	}
 
-	Texture2DArray GenerateTextureArray(Texture2D[] textures) 
+    /// <summary>
+    /// Set the pixels of each of the textures in the texture array and apply the changes to the texture array.
+    /// </summary>
+    /// <param name="textures">Array of textures to be included in the texture array</param>
+    /// <returns>A Texture2DArray containing the provided textures</returns>
+    Texture2DArray GenerateTextureArray(Texture2D[] textures) 
 	{
 		Texture2DArray textureArray = new Texture2DArray (textureSize, textureSize, textures.Length, textureFormat, true);
 		for (int i = 0; i < textures.Length; i++) 
@@ -51,6 +68,9 @@ public class TextureData : UpdatableData
 		return textureArray;
 	}
 
+	/// <summary>
+	/// Class representing a layer of the texture data
+	/// </summary>
 	[System.Serializable]
 	public class Layer 
 	{

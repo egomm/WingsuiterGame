@@ -7,6 +7,13 @@
 /// </summary>
 public static class MeshGenerator
 {
+    /// <summary>
+    /// Generate the terrain mesh based on the height map, mesh settings, and level of detail.
+    /// </summary>
+    /// <param name="heightMap">The height map for the terrain</param>
+    /// <param name="meshSettings">The settings for the terrain's mesh</param>
+    /// <param name="levelOfDetail">The level of detail of the terrain</param>
+    /// <returns>The mesh data for the terrain mesh</returns>
     public static MeshData GenerateTerrainMesh(float[,] heightMap, MeshSettings meshSettings, int levelOfDetail)
     {
         int vertexSkip = 1;
@@ -18,16 +25,20 @@ public static class MeshGenerator
         int verticesPerLine = meshSettings.numVertsPerLine;
         Vector2 topLeftPosition = new Vector2(-1, 1) * meshSettings.meshWorldSize / 2f;
 
+        // Initalise a new mesh data object
         MeshData meshData = new MeshData(verticesPerLine, vertexSkip, false);
         int[,] vertexIndexMap = new int[verticesPerLine, verticesPerLine];
         int meshVertexIndex = 0;
         int outOfMeshVertexIndex = -1;
 
+        /// Determine the index of each vertex
         for (int y = 0; y < verticesPerLine; y++)
         {
             for (int x = 0; x < verticesPerLine; x++)
             {
+                // Check if the vertex is on the border
                 bool isBorderVertex = y == 0 || y == verticesPerLine - 1 || x == 0 || x == verticesPerLine - 1;
+                // Check if the vertex should be skipped based on the LOD (note: vertices are skipped for less detail)
                 bool isSkippedVertex = x > 2 && x < verticesPerLine - 3 && y > 2 && y < verticesPerLine - 3 &&
                                        ((x - 2) % vertexSkip != 0 || (y - 2) % vertexSkip != 0);
 
@@ -44,6 +55,7 @@ public static class MeshGenerator
             }
         }
 
+        // Assign positions to vertices and generate the triangles connecting them
         for (int y = 0; y < verticesPerLine; y++)
         {
             for (int x = 0; x < verticesPerLine; x++)
@@ -53,6 +65,7 @@ public static class MeshGenerator
 
                 if (!isSkippedVertex)
                 {
+                    // Determine the type of vertex (border, edge, main, connecting)
                     bool isBorderVertex = y == 0 || y == verticesPerLine - 1 || x == 0 || x == verticesPerLine - 1;
                     bool isEdgeVertex = (y == 1 || y == verticesPerLine - 2 || x == 1 || x == verticesPerLine - 2) && !isBorderVertex;
                     bool isMainVertex = (x - 2) % vertexSkip == 0 && (y - 2) % vertexSkip == 0 && !isBorderVertex && !isEdgeVertex;
@@ -65,6 +78,7 @@ public static class MeshGenerator
 
                     if (isConnectingEdgeVertex)
                     {
+                        // Calculate the height for connecting edge vertices by interpolating between neighbouring main vertices
                         bool isVertical = x == 2 || x == verticesPerLine - 3;
                         int distanceToMainVertexA;
                         if (isVertical)
@@ -104,14 +118,17 @@ public static class MeshGenerator
 
                     meshData.AddVertex(new Vector3(vertexPosition2D.x, height, vertexPosition2D.y), vertexPercent, vertexIndex);
 
+                    // Add triangles between vertices to form the mesh surface
                     if (x < verticesPerLine - 1 && y < verticesPerLine - 1 && (!isConnectingEdgeVertex || (x != 2 && y != 2)))
                     {
                         int currentIncrement = 1;
                         if (isMainVertex && x != verticesPerLine - 3 && y != verticesPerLine - 3)
                         {
+                            // Adjusts triangle size based on level of detail
                             currentIncrement = vertexSkip;
                         }
 
+                        // This makes a square (a, b, c, d) out of two triangles (a, d, c) and (d, a, b)
                         int a = vertexIndexMap[x, y];
                         int b = vertexIndexMap[x + currentIncrement, y];
                         int c = vertexIndexMap[x, y + currentIncrement];
@@ -123,6 +140,7 @@ public static class MeshGenerator
             }
         }
 
+        // Process this mesh data and then return the mesh data
         meshData.ProcessMesh();
         return meshData;
     }
@@ -143,6 +161,12 @@ public class MeshData
 
     bool useFlatShading;
 
+    /// <summary>
+    /// This constructor initalises arrays based on the number of vertices and triangles
+    /// </summary>
+    /// <param name="verticesPerLine">The number of vertices per line</param>
+    /// <param name="vertexSkip">Manage the vertices to skip</param>
+    /// <param name="useFlatShading">Whether to use flat or smooth shading for the mesh</param>
     public MeshData(int verticesPerLine, int vertexSkip, bool useFlatShading)
     {
         this.useFlatShading = useFlatShading;
@@ -163,6 +187,12 @@ public class MeshData
         outOfMeshTriangles = new int[24 * (verticesPerLine - 2)];
     }
 
+    /// <summary>
+    /// Add a vertex at a given position.
+    /// </summary>
+    /// <param name="vertexPosition">The position of the vertex</param>
+    /// <param name="uv">Store horizontal and vertical positions on the texture (ie. a 2D vector)</param>
+    /// <param name="vertexIndex">The index of the vertex</param>
     public void AddVertex(Vector3 vertexPosition, Vector2 uv, int vertexIndex)
     {
         if (vertexIndex < 0)
@@ -176,6 +206,12 @@ public class MeshData
         }
     }
 
+    /// <summary>
+    /// Add a triangle to the triangles array with vertices (a, b, c)
+    /// </summary>
+    /// <param name="a">First vertex of the triangle</param>
+    /// <param name="b">Second vertex of the triangle</param>
+    /// <param name="c">Third vertex of the triangle</param>
     public void AddTriangle(int a, int b, int c)
     {
         if (a < 0 || b < 0 || c < 0)
@@ -194,6 +230,10 @@ public class MeshData
         }
     }
 
+    /// <summary>
+    /// Calculate the normals on the mesh
+    /// </summary>
+    /// <returns></returns>
     Vector3[] CalculateNormals()
     {
         Vector3[] vertexNormals = new Vector3[vertices.Length];
@@ -242,6 +282,10 @@ public class MeshData
         return vertexNormals;
     }
 
+    /// <summary>
+    /// Calculates the surface normal of a triangle given its vertex indices.
+    /// This is done by getting the cross product from the triangle (indexA, indexB, indexC).
+    /// </summary>
     Vector3 SurfaceNormalFromIndices(int indexA, int indexB, int indexC)
     {
         Vector3 pointA = (indexA < 0) ? outOfMeshVertices[-indexA - 1] : vertices[indexA];
@@ -253,6 +297,9 @@ public class MeshData
         return Vector3.Cross(sideAB, sideAC).normalized;
     }
 
+    /// <summary>
+    /// Process the mesh
+    /// </summary>
     public void ProcessMesh()
     {
         if (useFlatShading)
@@ -265,11 +312,17 @@ public class MeshData
         }
     }
 
+    /// <summary>
+    /// Calculates normals for smooth shading by averaging triangle normals
+    /// </summary>
     void BakeNormals()
     {
         bakedNormals = CalculateNormals();
     }
 
+    /// <summary>
+    /// Applies flat shading by creating duplicate vertices for each triangle, so each triangle has its own unique vertices
+    /// </summary>
     void FlatShading()
     {
         Vector3[] flatShadedVertices = new Vector3[triangles.Length];
@@ -286,6 +339,10 @@ public class MeshData
         uvs = flatShadedUVs;
     }
 
+    /// <summary>
+    /// Create the mesh with the data in this class.
+    /// </summary>
+    /// <returns>The created mesh</returns>
     public Mesh CreateMesh()
     {
         Mesh mesh = new Mesh

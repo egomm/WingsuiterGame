@@ -11,6 +11,9 @@ public class DeathManager : MonoBehaviour
     public GUITextManager textManager;
     public GameObject player;
 
+    /// <summary>
+    /// Open the death panel when the player dies.
+    /// </summary>
     public void OpenDeathPanel()
     {
         // Pause game
@@ -45,6 +48,9 @@ public class DeathManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Close the death panel.
+    /// </summary>
     public void CloseDeathPanel()
     {
         // Resume game
@@ -52,6 +58,9 @@ public class DeathManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    /// <summary>
+    /// Respawn.
+    /// </summary>
     public void Respawn()
     {
         // Set the player position to the world centre
@@ -65,6 +74,9 @@ public class DeathManager : MonoBehaviour
         CloseDeathPanel();
     }
 
+    /// <summary>
+    /// Exit to the main menu.
+    /// </summary>
     public void ExitToMainMenu()
     {
 

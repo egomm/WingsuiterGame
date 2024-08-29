@@ -8,22 +8,34 @@ using UnityEngine;
 /// All of the code comments are written by me based on my own understanding of this code.
 /// </summary>
 public static class HeightMapGenerator {
-	public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings settings, Vector2 sampleCentre) 
+    /// <summary>
+    /// Generate a height map based on the height map settings.
+    /// </summary>
+    /// <param name="width">The width of the height map</param>
+    /// <param name="height">The height of the height map</param>
+    /// <param name="settings">The settings for generating the height map, containing noise settings and the height curve</param>
+    /// <param name="sampleCentre">The central point from which noise mapping will start</param>
+    /// <returns>A height map object containing the generated values and their minimum and maximum heights</returns>
+    public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings settings, Vector2 sampleCentre) 
 	{
-		float[,] values = Noise.GenerateNoiseMap(width, height, settings.noiseSettings, sampleCentre);
+        // Generate a noise map using the provided settings and sample center
+        float[,] values = Noise.GenerateNoiseMap(width, height, settings.noiseSettings, sampleCentre);
 
-		AnimationCurve heightCurve_threadsafe = new AnimationCurve(settings.heightCurve.keys);
+        // Create a thread-safe copy of the height curve
+        AnimationCurve heightCurve_threadsafe = new AnimationCurve(settings.heightCurve.keys);
 
 		float minValue = float.MaxValue;
 		float maxValue = float.MinValue;
 
-		for (int i = 0; i < width; i++) 
+        // Apply the height curve and multiplier to each value in the noise map (which is a 2D array)
+        for (int i = 0; i < width; i++) 
 		{
 			for (int j = 0; j < height; j++) 
 			{
 				values [i, j] *= heightCurve_threadsafe.Evaluate(values [i, j]) * settings.heightMultiplier;
 
-				if (values [i, j] > maxValue) 
+                // Track the minimum and maximum values in the height map
+                if (values [i, j] > maxValue) 
 				{
 					maxValue = values [i, j];
 				}
@@ -39,6 +51,9 @@ public static class HeightMapGenerator {
 
 }
 
+/// <summary>
+/// Struct representing a height map, including its values and the minimum and maximum heights.
+/// </summary>
 public struct HeightMap 
 {
 	public readonly float[,] values;

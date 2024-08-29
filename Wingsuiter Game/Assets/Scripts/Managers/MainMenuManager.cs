@@ -11,6 +11,7 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene(sceneName: "World Selector");
     }
 
+    
     public void UpgradeWingsuit()
     {
         // Load the upgrade menu scene

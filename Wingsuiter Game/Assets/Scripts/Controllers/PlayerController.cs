@@ -322,10 +322,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Detect when the player collides with anything.
+    /// </summary>
+    /// <param name="collision">An object representing the collision (and what was collided with)</param>
     private void OnCollisionEnter(Collision collision)
     {
         if (DataManager.gameRunning)
         {
+            // Player dies
             deathManager.OpenDeathPanel();
         }
     }

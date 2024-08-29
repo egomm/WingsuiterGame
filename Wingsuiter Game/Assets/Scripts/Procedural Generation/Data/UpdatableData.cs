@@ -7,12 +7,16 @@
 /// </summary>
 public class UpdatableData : ScriptableObject 
 {
-
+	// Event triggered when the values are updated (ie. the values in the Procedural Generation Settings folder)
 	public event System.Action OnValuesUpdated;
 	public bool autoUpdate;
 
 	#if UNITY_EDITOR
 
+	/// <summary>
+	/// Called when a scriptable object is loaded or a value in the inspector is changed (ie. the values in the folder).
+	/// If auto update is enabled, the NotifyOfUpdatedValues method is scheduled to be called.
+	/// </summary>
 	protected virtual void OnValidate() 
 	{
 		if (autoUpdate) 
@@ -21,6 +25,10 @@ public class UpdatableData : ScriptableObject
 		}
 	}
 
+	/// <summary>
+	/// This method notifies subscribers (listeners) that the values have been updated.
+	/// The method is removed from the update event once called.
+	/// </summary>
 	public void NotifyOfUpdatedValues() 
 	{
 		UnityEditor.EditorApplication.update -= NotifyOfUpdatedValues;

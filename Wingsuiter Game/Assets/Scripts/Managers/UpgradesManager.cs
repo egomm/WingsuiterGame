@@ -52,9 +52,9 @@ public class UpgradesManager : MonoBehaviour
     private Color goldColour = new Color((float) 255 / 255, (float) 215 / 255, (float) 0 / 255);
 
     /// <summary>
-    /// 
+    /// Calculate the upgrade cost depending on the level of the perk.
     /// </summary>
-    /// <param name="level"></param>
+    /// <param name="level">The level of the perk.</param>
     private int CalculateUpgradeCost(int level)
     {
         // Calculate the upgrade cost, where C(n) = 125n^2 + 375n, where n is the current level and C(n) is the cost to upgrade
@@ -63,7 +63,8 @@ public class UpgradesManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Update the upgrade button text appropriately with the level, the cost, and details about what each upgrade does.
+    /// Ensure that the buttons are upgraded appropriately.
     /// </summary>
     private void UpdateUpgradeButtons()
     {
@@ -171,7 +172,7 @@ public class UpgradesManager : MonoBehaviour
 
     void Start()
     {
-        // 
+        // Update the upgrade buttons
         UpdateUpgradeButtons();
     }
 
@@ -217,7 +218,8 @@ public class UpgradesManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Note: This will only be called if the users balance is sufficient
+    /// Upgrade the coin multiplier perk by one level.
+    /// Note: This will only be called if the users balance is sufficient.
     /// </summary>
     public void UpgradeCoinMultiplier()
     {
@@ -234,7 +236,8 @@ public class UpgradesManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Note: This will only be called if the users balance is sufficient
+    /// Upgrade the movability perk by one level.
+    /// Note: This will only be called if the users balance is sufficient.
     /// </summary>
     public void UpgradeMovability()
     {
@@ -251,7 +254,8 @@ public class UpgradesManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Note: This will only be called if the users balance is sufficient
+    /// Upgrade the flare cooldown perk by one level.
+    /// Note: This will only be called if the users balance is sufficient.
     /// </summary>
     public void UpgradeFlareCooldown()
     {

@@ -75,7 +75,7 @@ public class WorldManager : MonoBehaviour
     private bool seedFieldComplete = false;
 
     /// <summary>
-    /// Load the World Creator scene
+    /// Load the World Creator scene.
     /// </summary>
     public void OpenCreateWorldMenu()
     {
@@ -83,7 +83,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Load the World Selector scene
+    /// Load the World Selector scene.
     /// </summary>
     public void ExitWorldCreator()
     {
@@ -91,7 +91,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Load the Main Menu scene
+    /// Load the Main Menu scene.
     /// </summary>
     public void ExitWorldSelector()
     {
@@ -100,7 +100,7 @@ public class WorldManager : MonoBehaviour
 
     /// <summary>
     /// Order the world list such that the most recently opened/created world is displayed first in the world list.
-    /// This is done by comparing
+    /// This is done by comparing the last opened time of each world.
     /// </summary>
     public static void SortWorldList()
     {
@@ -109,7 +109,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Closes the error panel
+    /// Closes the error panel.
     /// </summary>
     public void CloseErrorPanel()
     {
@@ -117,7 +117,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Create a new world with the given world name and world seed
+    /// Create a new world with the given world name and world seed.
     /// </summary>
     public void CreateWorld()
     {
@@ -196,7 +196,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Edit the name of the world
+    /// Edit the name of the world.
     /// </summary>
     public void EditWorld()
     {
@@ -275,7 +275,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Read the world name input from the world name input field
+    /// Read the world name input from the world name input field.
     /// </summary>
     /// <param name="input">The text in the world name input field</param>
     public void ReadWorldName(string input)
@@ -284,7 +284,7 @@ public class WorldManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Read the seed input from the seed input field and parse it to an integer
+    /// Read the seed input from the seed input field and parse it to an integer.
     /// </summary>
     /// <param name="input">The text in the seed input field</param>
     public void ReadSeedInput(string input)
